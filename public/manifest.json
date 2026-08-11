@@ -1,0 +1,23 @@
+{
+  "name": "George Bakhanyiselwa Nguwe Bawo NPC",
+  "short_name": "GBNB NPC",
+  "description": "Faith-based nonprofit organization - Guided by Faith, United in Purpose",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B3D91",
+  "theme_color": "#0B3D91",
+  "icons": [
+    {
+      "src": "/bakhanyiselwa_icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/bakhanyiselwa_icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

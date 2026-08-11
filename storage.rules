@@ -1,0 +1,63 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to validate image uploads
+    function isImage() {
+      return request.resource.contentType.matches('image/.*');
+    }
+    
+    // Helper function to validate video uploads
+    function isVideo() {
+      return request.resource.contentType.matches('video/.*');
+    }
+    
+    // Helper function to validate file size (max 10MB)
+    function isUnderSizeLimit() {
+      return request.resource.size < 10 * 1024 * 1024;
+    }
+    
+    // Gallery images - Public read, authenticated users can upload
+    match /gallery/{fileName} {
+      allow read: if true;
+      allow create: if isAuthenticated() && isImage() && isUnderSizeLimit();
+      allow update, delete: if isAuthenticated();
+    }
+    
+    // Event images - Public read, authenticated users can upload
+    match /events/{fileName} {
+      allow read: if true;
+      allow create: if isAuthenticated() && (isImage() || isVideo()) && isUnderSizeLimit();
+      allow update, delete: if isAuthenticated();
+    }
+    
+    // Profile images - Only owner can read/write their own
+    match /profiles/{userId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && request.auth.uid == userId && isImage() && isUnderSizeLimit();
+    }
+    
+    // Announcement images - Authenticated users can upload
+    match /announcements/{fileName} {
+      allow read: if true;
+      allow write: if isAuthenticated() && isImage() && isUnderSizeLimit();
+    }
+    
+    // Program images - Authenticated users can upload
+    match /programs/{fileName} {
+      allow read: if true;
+      allow write: if isAuthenticated() && isImage() && isUnderSizeLimit();
+    }
+    
+    // Legacy/other uploads - Default rules
+    match /{allPaths=**} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+  }
+}

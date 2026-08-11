@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+  <msapplication>
+    <tile>
+      <square150x150logo src="/bakhanyiselwa_icon.png"/>
+      <TileColor>#0B3D91</TileColor>
+    </tile>
+    <wide310x150logo src="/bakhanyiselwa_icon.png"/>
+    <square310x310logo src="/bakhanyiselwa_icon.png"/>
+    <square70x70logo src="/bakhanyiselwa_icon.png"/>
+  </msapplication>
+</browserconfig>

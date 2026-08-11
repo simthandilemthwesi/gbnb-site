@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+
+# Build output
+build/
+dist/
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+
+# Environment variables (contains secrets - DO NOT COMMIT)
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+dev-server.log
+
+# Windows junk
+Thumbs.db
+Desktop.ini
+nul
+
+# macOS
+.DS_Store
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Test artifacts
+test_simple.ts
+
+# Misc
+*.tsbuildinfo
