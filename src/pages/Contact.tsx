@@ -141,6 +141,13 @@ const Contact: React.FC = () => {
       <Helmet>
         <title>Contact Us | George Bakhanyiselwa Nguwe Bawo NPC</title>
         <meta name="description" content="Get in touch with George Bakhanyiselwa Nguwe Bawo NPC. We'd love to hear from you." />
+        <meta property="og:url" content="https://bakhanyiselwa.web.app/contact" />
+        <meta property="og:title" content="Contact Us | George Bakhanyiselwa Nguwe Bawo NPC" />
+        <meta property="og:description" content="Get in touch with George Bakhanyiselwa Nguwe Bawo NPC. We'd love to hear from you." />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Contact Us | George Bakhanyiselwa Nguwe Bawo NPC" />
+        <meta name="twitter:description" content="Get in touch with George Bakhanyiselwa Nguwe Bawo NPC. We'd love to hear from you." />
       </Helmet>
 
       {/* Header */}

@@ -15,6 +15,34 @@ import {
 } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '../services/firebase';
+import { testimonials as defaultTestimonials } from '../data/testimonials';
+
+const defaultVideos = [
+  {
+    title: 'George Bakhanyiselwa Nguwe Bawo NPC Donates Clothes After Zone 8 Fire – June 15, 2025',
+    videoId: 'My5RBtxJ7vo',
+    caption: `On June 15, 2025, George Bakhanyiselwa Nguwe Bawo NPC stepped forward to support families affected by the tragic fire in Zone 8, Thembalethu, George, Western Cape.
+
+The fire, which broke out on June 6, destroyed 39 informal structures and left many men, women, and children without homes or belongings. In response, our NPC, alongside local churches, donated clothes, accessories, and provided temporary shelter to those in need.
+
+This act of compassion reflects our mission: "Yizani Sakhe Udonga Lwe Jerusalem" – to rebuild, restore, and uplift our community through faith and unity.
+
+Together we build, together we rise.`,
+    order: 1
+  },
+  {
+    title: 'George Bakhanyiselwa Nguwe Bawo NPC Donates Clothes After Zone 9 Fire – October 27, 2025',
+    videoId: 'vG0kXPbrzLA',
+    caption: `On October 27, 2025, George Bakhanyiselwa Nguwe Bawo NPC responded with compassion to support families affected by the tragic mid-October fire in Zone 9, Thembalethu, George, Western Cape.
+
+The fire destroyed numerous informal structures, leaving men, women, and children without homes and belongings. In partnership with local churches, our NPC donated clothes, accessories, and provided temporary shelter to those in need.
+
+This act of service reflects our mission: "Yizani Sakhe Udonga Lwe Jerusalem" – to rebuild, restore, and uplift our community through faith and unity.
+
+Together we build, together we rise.`,
+    order: 2
+  }
+];
 
 interface NavItem {
   id: string;
@@ -33,6 +61,8 @@ const Admin: React.FC = () => {
   const [programs, setPrograms] = useState<any[]>([]);
   const [galleryItems, setGalleryItems] = useState<any[]>([]);
   const [photoSubmissions, setPhotoSubmissions] = useState<any[]>([]);
+  const [videos, setVideos] = useState<any[]>([]);
+  const [testimonialsList, setTestimonialsList] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [newTitle, setNewTitle] = useState('');
@@ -40,6 +70,19 @@ const Admin: React.FC = () => {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [loginError, setLoginError] = useState('');
+
+  const [videoTitle, setVideoTitle] = useState('');
+  const [videoId, setVideoId] = useState('');
+  const [videoCaption, setVideoCaption] = useState('');
+  const [videoOrder, setVideoOrder] = useState(1);
+  const [editingVideoId, setEditingVideoId] = useState<string | null>(null);
+
+  const [testAuthor, setTestAuthor] = useState('');
+  const [testRole, setTestRole] = useState('');
+  const [testPreview, setTestPreview] = useState('');
+  const [testFull, setTestFull] = useState('');
+  const [testOrder, setTestOrder] = useState(1);
+  const [editingTestimonialId, setEditingTestimonialId] = useState<string | null>(null);
 
   const navItems: NavItem[] = [
     {
@@ -97,6 +140,16 @@ const Admin: React.FC = () => {
       )
     },
     {
+      id: 'videos',
+      label: 'Videos',
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <polygon points="23 7 16 12 23 17 23 7" />
+          <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+        </svg>
+      )
+    },
+    {
       id: 'photoSubmissions',
       label: 'Photo Submissions',
       icon: (
@@ -104,6 +157,15 @@ const Admin: React.FC = () => {
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
           <polyline points="17 8 12 3 7 8" />
           <line x1="12" y1="3" x2="12" y2="15" />
+        </svg>
+      )
+    },
+    {
+      id: 'testimonials',
+      label: 'Testimonials',
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
         </svg>
       )
     },
@@ -197,6 +259,22 @@ const Admin: React.FC = () => {
           const submissionsQuery = query(collection(db, 'photo_submissions'), orderBy('uploadedAt', 'desc'));
           const submissionsSnapshot = await getDocs(submissionsQuery);
           setPhotoSubmissions(submissionsSnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          })));
+          break;
+        case 'videos':
+          const videosQuery = query(collection(db, 'gallery_videos'), orderBy('order', 'asc'));
+          const videosSnapshot = await getDocs(videosQuery);
+          setVideos(videosSnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          })));
+          break;
+        case 'testimonials':
+          const testimonialsQuery = query(collection(db, 'testimonials'), orderBy('order', 'asc'));
+          const testimonialsSnapshot = await getDocs(testimonialsQuery);
+          setTestimonialsList(testimonialsSnapshot.docs.map(doc => ({
             id: doc.id,
             ...doc.data()
           })));
@@ -627,6 +705,258 @@ const Admin: React.FC = () => {
     </div>
   );
 
+  const seedDefaults = async (collectionName: string, items: any[]) => {
+    try {
+      for (const item of items) {
+        const { id, ...data } = item;
+        await addDoc(collection(db, collectionName), {
+          ...data,
+          createdAt: Timestamp.now(),
+          updatedAt: Timestamp.now()
+        });
+      }
+      fetchData();
+    } catch (error) {
+      console.error('Error seeding defaults:', error);
+    }
+  };
+
+  const resetVideoForm = () => {
+    setVideoTitle('');
+    setVideoId('');
+    setVideoCaption('');
+    setVideoOrder(videos.length + 1);
+    setEditingVideoId(null);
+  };
+
+  const saveVideo = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!videoTitle || !videoId) return;
+    try {
+      if (editingVideoId) {
+        await updateDoc(doc(db, 'gallery_videos', editingVideoId), {
+          title: videoTitle,
+          videoId,
+          caption: videoCaption,
+          order: Number(videoOrder),
+          updatedAt: Timestamp.now()
+        });
+      } else {
+        await addDoc(collection(db, 'gallery_videos'), {
+          title: videoTitle,
+          videoId,
+          caption: videoCaption,
+          order: Number(videoOrder),
+          createdAt: Timestamp.now(),
+          updatedAt: Timestamp.now()
+        });
+      }
+      resetVideoForm();
+      fetchData();
+    } catch (error) {
+      console.error('Error saving video:', error);
+    }
+  };
+
+  const editVideo = (video: any) => {
+    setEditingVideoId(video.id);
+    setVideoTitle(video.title || '');
+    setVideoId(video.videoId || '');
+    setVideoCaption(video.caption || '');
+    setVideoOrder(video.order || 1);
+  };
+
+  const renderVideos = () => (
+    <div className="admin-card">
+      <div className="admin-card-header">
+        <h3 className="admin-card-title">Manage Gallery Videos</h3>
+      </div>
+      <form onSubmit={saveVideo} style={{ marginBottom: '2rem', padding: '1rem', backgroundColor: 'var(--gray-50)', borderRadius: '8px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
+          <div className="input-group">
+            <label>Video Title *</label>
+            <input type="text" value={videoTitle} onChange={(e) => setVideoTitle(e.target.value)} placeholder="Enter title" required />
+          </div>
+          <div className="input-group">
+            <label>YouTube Video ID *</label>
+            <input type="text" value={videoId} onChange={(e) => setVideoId(e.target.value)} placeholder="e.g. My5RBtxJ7vo" required />
+          </div>
+          <div className="input-group">
+            <label>Display Order</label>
+            <input type="number" value={videoOrder} onChange={(e) => setVideoOrder(Number(e.target.value))} min={1} />
+          </div>
+        </div>
+        <div className="input-group" style={{ marginTop: '1rem' }}>
+          <label>Caption</label>
+          <textarea rows={3} value={videoCaption} onChange={(e) => setVideoCaption(e.target.value)} placeholder="Enter caption / blog text" />
+        </div>
+        <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
+          <button type="submit" className="btn btn-primary">{editingVideoId ? 'Update Video' : 'Add Video'}</button>
+          {editingVideoId && (
+            <button type="button" onClick={resetVideoForm} className="btn btn-ghost">Cancel</button>
+          )}
+        </div>
+      </form>
+
+      {loading ? (
+        <div className="loading-spinner"><div className="spinner"></div></div>
+      ) : videos.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '2rem' }}>
+          <p style={{ color: 'var(--gray-500)', marginBottom: '1rem' }}>No videos yet.</p>
+          <button onClick={() => seedDefaults('gallery_videos', defaultVideos)} className="btn btn-secondary">
+            Load Default Videos
+          </button>
+        </div>
+      ) : (
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Video ID</th>
+              <th>Order</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {videos.map((video) => (
+              <tr key={video.id}>
+                <td>{video.title}</td>
+                <td style={{ fontFamily: 'monospace', fontSize: '0.8rem' }}>{video.videoId}</td>
+                <td>{video.order}</td>
+                <td>
+                  <button onClick={() => editVideo(video)} style={{ marginRight: '0.5rem', background: 'none', border: 'none', color: 'var(--secondary-blue)', cursor: 'pointer' }}>Edit</button>
+                  <button onClick={() => deleteItem('gallery_videos', video.id)} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer' }}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+
+  const resetTestimonialForm = () => {
+    setTestAuthor('');
+    setTestRole('');
+    setTestPreview('');
+    setTestFull('');
+    setTestOrder(testimonialsList.length + 1);
+    setEditingTestimonialId(null);
+  };
+
+  const saveTestimonial = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!testAuthor || !testFull) return;
+    try {
+      if (editingTestimonialId) {
+        await updateDoc(doc(db, 'testimonials', editingTestimonialId), {
+          author: testAuthor,
+          role: testRole,
+          preview: testPreview,
+          full: testFull,
+          order: Number(testOrder),
+          updatedAt: Timestamp.now()
+        });
+      } else {
+        await addDoc(collection(db, 'testimonials'), {
+          author: testAuthor,
+          role: testRole,
+          preview: testPreview,
+          full: testFull,
+          order: Number(testOrder),
+          createdAt: Timestamp.now(),
+          updatedAt: Timestamp.now()
+        });
+      }
+      resetTestimonialForm();
+      fetchData();
+    } catch (error) {
+      console.error('Error saving testimonial:', error);
+    }
+  };
+
+  const editTestimonial = (t: any) => {
+    setEditingTestimonialId(t.id);
+    setTestAuthor(t.author || '');
+    setTestRole(t.role || '');
+    setTestPreview(t.preview || '');
+    setTestFull(t.full || '');
+    setTestOrder(t.order || 1);
+  };
+
+  const renderTestimonials = () => (
+    <div className="admin-card">
+      <div className="admin-card-header">
+        <h3 className="admin-card-title">Manage Testimonials</h3>
+      </div>
+      <form onSubmit={saveTestimonial} style={{ marginBottom: '2rem', padding: '1rem', backgroundColor: 'var(--gray-50)', borderRadius: '8px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
+          <div className="input-group">
+            <label>Author *</label>
+            <input type="text" value={testAuthor} onChange={(e) => setTestAuthor(e.target.value)} placeholder="e.g. Mrs Ngcenge" required />
+          </div>
+          <div className="input-group">
+            <label>Role</label>
+            <input type="text" value={testRole} onChange={(e) => setTestRole(e.target.value)} placeholder="e.g. Verified Membership" />
+          </div>
+          <div className="input-group">
+            <label>Display Order</label>
+            <input type="number" value={testOrder} onChange={(e) => setTestOrder(Number(e.target.value))} min={1} />
+          </div>
+        </div>
+        <div className="input-group" style={{ marginTop: '1rem' }}>
+          <label>Short Preview (Home page)</label>
+          <textarea rows={2} value={testPreview} onChange={(e) => setTestPreview(e.target.value)} placeholder="2-sentence summary shown on the home page" />
+        </div>
+        <div className="input-group" style={{ marginTop: '1rem' }}>
+          <label>Full Testimonial *</label>
+          <textarea rows={5} value={testFull} onChange={(e) => setTestFull(e.target.value)} placeholder="Full story shown on the Gallery page" required />
+        </div>
+        <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
+          <button type="submit" className="btn btn-primary">{editingTestimonialId ? 'Update Testimonial' : 'Add Testimonial'}</button>
+          {editingTestimonialId && (
+            <button type="button" onClick={resetTestimonialForm} className="btn btn-ghost">Cancel</button>
+          )}
+        </div>
+      </form>
+
+      {loading ? (
+        <div className="loading-spinner"><div className="spinner"></div></div>
+      ) : testimonialsList.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '2rem' }}>
+          <p style={{ color: 'var(--gray-500)', marginBottom: '1rem' }}>No testimonials yet.</p>
+          <button onClick={() => seedDefaults('testimonials', defaultTestimonials)} className="btn btn-secondary">
+            Load Default Testimonials
+          </button>
+        </div>
+      ) : (
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Author</th>
+              <th>Role</th>
+              <th>Order</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {testimonialsList.map((t) => (
+              <tr key={t.id}>
+                <td>{t.author}</td>
+                <td>{t.role || '-'}</td>
+                <td>{t.order}</td>
+                <td>
+                  <button onClick={() => editTestimonial(t)} style={{ marginRight: '0.5rem', background: 'none', border: 'none', color: 'var(--secondary-blue)', cursor: 'pointer' }}>Edit</button>
+                  <button onClick={() => deleteItem('testimonials', t.id)} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer' }}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+
   const renderPrograms = () => (
     <div className="admin-card">
       <div className="admin-card-header">
@@ -797,7 +1127,9 @@ const Admin: React.FC = () => {
       case 'contacts': return renderContacts();
       case 'announcements': return renderAnnouncements();
       case 'gallery': return renderGallery();
+      case 'videos': return renderVideos();
       case 'photoSubmissions': return renderPhotoSubmissions();
+      case 'testimonials': return renderTestimonials();
       case 'programs': return renderPrograms();
       case 'donations': return renderDonations();
       case 'partnerships': return renderPartnerships();

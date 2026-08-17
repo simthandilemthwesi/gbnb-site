@@ -54,16 +54,7 @@ const FirebaseSetup: React.FC = () => {
         updatedAt: Timestamp.now()
       }
     },
-    {
-      name: 'gallery',
-      sample: {
-        title: 'Welcome Image',
-        imageUrl: '',
-        category: 'events',
-        uploadedAt: Timestamp.now(),
-        type: 'image'
-      }
-    },
+
     {
       name: 'programs',
       sample: {

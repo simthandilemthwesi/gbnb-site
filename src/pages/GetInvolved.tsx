@@ -6,7 +6,7 @@ import { db } from '../services/firebase';
 import { notifyAdmin } from '../services/emailService';
 import Captcha from '../components/Captcha';
 
-interface FormData {
+interface VolunteerFormData {
   fullName: string;
   email: string;
   phone: string;
@@ -23,17 +23,29 @@ interface DonationFormData {
   message: string;
 }
 
-interface PartnershipFormData {
-  organizationName: string;
-  contactPerson: string;
-  email: string;
-  phone: string;
-  partnershipType: string;
-  message: string;
+interface VolunteerErrors {
+  fullName?: string;
+  email?: string;
+  phone?: string;
+  skills?: string;
+  availability?: string;
+  message?: string;
+  captcha?: string;
 }
 
+interface DonationErrors {
+  donorName?: string;
+  email?: string;
+  amount?: string;
+  currency?: string;
+  message?: string;
+  captcha?: string;
+}
+
+const PARTNERSHIP_FORM_URL = 'https://form.jotform.com/262223901730044';
+
 const GetInvolved: React.FC = () => {
-  const [volunteerForm, setVolunteerForm] = useState<FormData>({
+  const [volunteerForm, setVolunteerForm] = useState<VolunteerFormData>({
     fullName: '',
     email: '',
     phone: '',
@@ -48,21 +60,14 @@ const GetInvolved: React.FC = () => {
     currency: 'ZAR',
     message: ''
   });
-  const [partnershipForm, setPartnershipForm] = useState<PartnershipFormData>({
-    organizationName: '',
-    contactPerson: '',
-    email: '',
-    phone: '',
-    partnershipType: '',
-    message: ''
-  });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
   const [volunteerCaptcha, setVolunteerCaptcha] = useState('');
   const [donationCaptcha, setDonationCaptcha] = useState('');
-  const [partnershipCaptcha, setPartnershipCaptcha] = useState('');
-  const [captchaKeys, setCaptchaKeys] = useState({ volunteer: 0, donation: 0, partnership: 0 });
+  const [captchaKeys, setCaptchaKeys] = useState({ volunteer: 0, donation: 0 });
+  const [volunteerErrors, setVolunteerErrors] = useState<VolunteerErrors>({});
+  const [donationErrors, setDonationErrors] = useState<DonationErrors>({});
 
   const handleVolunteerSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,7 +86,7 @@ const GetInvolved: React.FC = () => {
         status: 'pending'
       });
       
-      await notifyAdmin('Volunteer', volunteerForm, volunteerCaptcha);
+      await notifyAdmin('Volunteer', volunteerForm, volunteerCaptcha, '7a92fa81-92b5-4258-9aee-6a50988dc80c');
       setSuccess('Thank you for volunteering! We will be in touch soon.');
       setVolunteerForm({
         fullName: '',
@@ -118,7 +123,7 @@ const GetInvolved: React.FC = () => {
         status: 'pending'
       });
       
-      await notifyAdmin('Donation', donationForm, donationCaptcha);
+      await notifyAdmin('Donation', donationForm, donationCaptcha, 'da4fb039-b681-4c52-beda-2c3e9e680ef5');
       setSuccess('Thank you for your generous donation! We will contact you with payment details.');
       setDonationForm({
         donorName: '',
@@ -129,42 +134,6 @@ const GetInvolved: React.FC = () => {
       });
       setDonationCaptcha('');
       setCaptchaKeys((prev) => ({ ...prev, donation: prev.donation + 1 }));
-    } catch (err) {
-      setError('Failed to submit. Please try again.');
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handlePartnershipSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!partnershipCaptcha) {
-      setError('Please complete the captcha to verify you are human.');
-      return;
-    }
-    setSubmitting(true);
-    setError('');
-    setSuccess('');
-
-    try {
-      await addDoc(collection(db, 'partnerships'), {
-        ...partnershipForm,
-        createdAt: Timestamp.now(),
-        status: 'pending'
-      });
-      
-      await notifyAdmin('Partnership', partnershipForm, partnershipCaptcha);
-      setSuccess('Thank you for your partnership interest! We will be in touch soon.');
-      setPartnershipForm({
-        organizationName: '',
-        contactPerson: '',
-        email: '',
-        phone: '',
-        partnershipType: '',
-        message: ''
-      });
-      setPartnershipCaptcha('');
-      setCaptchaKeys((prev) => ({ ...prev, partnership: prev.partnership + 1 }));
     } catch (err) {
       setError('Failed to submit. Please try again.');
     } finally {
@@ -216,6 +185,13 @@ const GetInvolved: React.FC = () => {
       <Helmet>
         <title>Get Involved | George Bakhanyiselwa Nguwe Bawo NPC</title>
         <meta name="description" content="Volunteer, donate, or partner with us to make a difference. Join our mission to build faith-centered communities." />
+        <meta property="og:url" content="https://bakhanyiselwa.web.app/get-involved" />
+        <meta property="og:title" content="Get Involved | George Bakhanyiselwa Nguwe Bawo NPC" />
+        <meta property="og:description" content="Volunteer, donate, or partner with us to make a difference. Join our mission to build faith-centered communities." />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Get Involved | George Bakhanyiselwa Nguwe Bawo NPC" />
+        <meta name="twitter:description" content="Volunteer, donate, or partner with us to make a difference. Join our mission to build faith-centered communities." />
       </Helmet>
 
       {/* Header */}
@@ -474,93 +450,29 @@ const GetInvolved: React.FC = () => {
             <p className="text-gray-600">Let's work together to make a greater impact</p>
           </div>
 
-          <form onSubmit={handlePartnershipSubmit} className="bg-white rounded-2xl p-6 md:p-8 shadow-soft space-y-4">
-            <div>
-              <label className="label">Organization Name *</label>
-              <input
-                type="text"
-                required
-                value={partnershipForm.organizationName}
-                onChange={(e) => setPartnershipForm({...partnershipForm, organizationName: e.target.value})}
-                placeholder="Your organization name"
-                className="input"
-              />
-            </div>
-            <div>
-              <label className="label">Contact Person *</label>
-              <input
-                type="text"
-                required
-                value={partnershipForm.contactPerson}
-                onChange={(e) => setPartnershipForm({...partnershipForm, contactPerson: e.target.value})}
-                placeholder="Your name"
-                className="input"
-              />
-            </div>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <label className="label">Email *</label>
-                <input
-                  type="email"
-                  required
-                  value={partnershipForm.email}
-                  onChange={(e) => setPartnershipForm({...partnershipForm, email: e.target.value})}
-                  placeholder="contact@organization.com"
-                  className="input"
-                />
-              </div>
-              <div>
-                <label className="label">Phone</label>
-                <input
-                  type="tel"
-                  value={partnershipForm.phone}
-                  onChange={(e) => setPartnershipForm({...partnershipForm, phone: e.target.value})}
-                  placeholder="+27 XX XXX XXXX"
-                  className="input"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="label">Partnership Type</label>
-              <select
-                value={partnershipForm.partnershipType}
-                onChange={(e) => setPartnershipForm({...partnershipForm, partnershipType: e.target.value})}
-                className="input"
-              >
-                <option value="">Select partnership type</option>
-                <option value="sponsorship">Sponsorship</option>
-                <option value="event">Event Partnership</option>
-                <option value="program">Program Collaboration</option>
-                <option value="media">Media Partnership</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-            <div>
-              <label className="label">Message *</label>
-              <textarea
-                rows={4}
-                required
-                value={partnershipForm.message}
-                onChange={(e) => setPartnershipForm({...partnershipForm, message: e.target.value})}
-                placeholder="Tell us about your partnership ideas..."
-                className="input resize-none"
-              />
-            </div>
-            <div className="flex justify-center">
-              <Captcha
-                key={captchaKeys.partnership}
-                onVerify={(token) => setPartnershipCaptcha(token)}
-                onExpire={() => setPartnershipCaptcha('')}
-              />
-            </div>
-            <button 
-              type="submit" 
-              className="w-full py-4 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-glow disabled:opacity-50"
-              disabled={submitting}
+          <div className="bg-white rounded-2xl p-6 md:p-8 shadow-soft text-center">
+            <p className="text-gray-600 mb-8">
+              Please complete our partnership enquiry form below. It takes less than two minutes and our team will get back to you.
+            </p>
+            <a
+              href={PARTNERSHIP_FORM_URL}
+              target="_blank"
+              rel="noopener noreferrer no-follow"
+              className="inline-block px-8 py-4 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-glow hover:-translate-y-1"
             >
-              {submitting ? 'Submitting...' : 'Submit Inquiry'}
-            </button>
-          </form>
+              Open Partnership Enquiry Form
+            </a>
+            <p className="text-sm text-gray-500 mt-6 mb-4">Or scan the QR code below</p>
+            <a href={PARTNERSHIP_FORM_URL} rel="no-follow">
+              <img
+                src="https://www.jotform.com/uploads/infogbnb/form_files/262223901730044_1786455872_qrcode_muse.png"
+                width="200"
+                height="200"
+                className="mx-auto"
+                alt="QR Code for GBNB Partnership Enquiry form"
+              />
+            </a>
+          </div>
         </div>
       </section>
 

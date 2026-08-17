@@ -8,6 +8,8 @@ import { useAuth } from '../contexts/AuthContext';
 import { notifyAdmin } from '../services/emailService';
 import Captcha from '../components/Captcha';
 
+import { testimonials } from '../data/testimonials';
+
 interface GalleryItem {
   id: string;
   title: string;
@@ -19,6 +21,40 @@ interface GalleryItem {
   submittedBy?: string;
   email?: string;
 }
+
+interface GalleryVideo {
+  id: string;
+  title: string;
+  videoId: string;
+  caption: string;
+}
+
+const galleryVideos: GalleryVideo[] = [
+  {
+    id: 'zone-8',
+    title: 'George Bakhanyiselwa Nguwe Bawo NPC Donates Clothes After Zone 8 Fire – June 15, 2025',
+    videoId: 'My5RBtxJ7vo',
+    caption: `On June 15, 2025, George Bakhanyiselwa Nguwe Bawo NPC stepped forward to support families affected by the tragic fire in Zone 8, Thembalethu, George, Western Cape.
+
+The fire, which broke out on June 6, destroyed 39 informal structures and left many men, women, and children without homes or belongings. In response, our NPC, alongside local churches, donated clothes, accessories, and provided temporary shelter to those in need.
+
+This act of compassion reflects our mission: "Yizani Sakhe Udonga Lwe Jerusalem" – to rebuild, restore, and uplift our community through faith and unity.
+
+Together we build, together we rise.`
+  },
+  {
+    id: 'zone-9',
+    title: 'George Bakhanyiselwa Nguwe Bawo NPC Donates Clothes After Zone 9 Fire – October 27, 2025',
+    videoId: 'vG0kXPbrzLA',
+    caption: `On October 27, 2025, George Bakhanyiselwa Nguwe Bawo NPC responded with compassion to support families affected by the tragic mid-October fire in Zone 9, Thembalethu, George, Western Cape.
+
+The fire destroyed numerous informal structures, leaving men, women, and children without homes and belongings. In partnership with local churches, our NPC donated clothes, accessories, and provided temporary shelter to those in need.
+
+This act of service reflects our mission: "Yizani Sakhe Udonga Lwe Jerusalem" – to rebuild, restore, and uplift our community through faith and unity.
+
+Together we build, together we rise.`
+  }
+];
 
 const Gallery: React.FC = () => {
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
@@ -35,6 +71,38 @@ const Gallery: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const submitFileRef = useRef<HTMLInputElement>(null);
   const { isAdmin } = useAuth();
+  const [dbVideos, setDbVideos] = useState<any[]>([]);
+  const [dbTestimonials, setDbTestimonials] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        const q = query(collection(db, 'gallery_videos'), orderBy('order', 'asc'));
+        const snapshot = await getDocs(q);
+        setDbVideos(snapshot.docs.map((d) => ({ id: d.id, ...d.data() })));
+      } catch (error) {
+        console.log('Using default videos');
+      }
+    };
+    fetchVideos();
+  }, []);
+
+  const displayVideos = dbVideos.length > 0 ? dbVideos : galleryVideos;
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const q = query(collection(db, 'testimonials'), orderBy('order', 'asc'));
+        const snapshot = await getDocs(q);
+        setDbTestimonials(snapshot.docs.map((d) => ({ id: d.id, ...d.data() })));
+      } catch (error) {
+        console.log('Using default testimonials');
+      }
+    };
+    fetchTestimonials();
+  }, []);
+
+  const displayTestimonials = dbTestimonials.length > 0 ? dbTestimonials : testimonials;
 
   useEffect(() => {
     fetchGalleryItems();
@@ -158,6 +226,13 @@ const Gallery: React.FC = () => {
       <Helmet>
         <title>Gallery | George Bakhanyiselwa Nguwe Bawo NPC</title>
         <meta name="description" content="Explore our photo gallery showcasing events, worship services, and community activities." />
+        <meta property="og:url" content="https://bakhanyiselwa.web.app/gallery" />
+        <meta property="og:title" content="Gallery | George Bakhanyiselwa Nguwe Bawo NPC" />
+        <meta property="og:description" content="Explore our photo gallery showcasing events, worship services, and community activities." />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Gallery | George Bakhanyiselwa Nguwe Bawo NPC" />
+        <meta name="twitter:description" content="Explore our photo gallery showcasing events, worship services, and community activities." />
       </Helmet>
 
       {/* Header */}
@@ -178,19 +253,10 @@ const Gallery: React.FC = () => {
         </div>
       </section>
 
-      {/* Featured */}
-      <section className="py-12 md:py-16 bg-gradient-to-br from-primary-500 via-primary-600 to-primary-700">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl md:text-3xl font-serif font-bold text-white mb-2">3rd Year Anniversary Celebration</h2>
-          <p className="text-white/80">Celebrating three years of faith, fellowship, and service</p>
-        </div>
-      </section>
-
-      {/* Gallery */}
-      <section className="py-16 md:py-20 bg-gray-50">
+      {/* Category Filter */}
+      <section className="py-8 bg-white border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Categories */}
-          <div className="flex flex-wrap justify-center gap-2 mb-10">
+          <div className="flex flex-wrap justify-center gap-2">
             {categories.map((category) => (
               <button
                 key={category.id}
@@ -198,14 +264,48 @@ const Gallery: React.FC = () => {
                 className={`px-4 py-2 rounded-full font-medium transition-all duration-300 ${
                   activeCategory === category.id
                     ? 'bg-primary-500 text-white shadow-glow'
-                    : 'bg-white text-gray-600 hover:bg-primary-50 hover:text-primary-500'
+                    : 'bg-gray-50 text-gray-600 hover:bg-primary-50 hover:text-primary-500'
                 }`}
               >
                 {category.label}
               </button>
             ))}
           </div>
+        </div>
+      </section>
 
+      {/* Videos */}
+      <section className="py-16 md:py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-4">Community Outreach Videos</h2>
+            <p className="text-gray-600">Witness our response to those in need within our community</p>
+          </div>
+          <div className="space-y-12">
+            {displayVideos.map((video) => (
+              <article key={video.id} className="bg-gray-50 rounded-3xl p-6 md:p-10 border border-gray-100">
+                <div className="relative w-full rounded-2xl overflow-hidden shadow-lg bg-gray-900" style={{ paddingBottom: '56.25%', height: 0 }}>
+                  <iframe
+                    className="absolute top-0 left-0 w-full h-full"
+                    src={`https://www.youtube.com/embed/${video.videoId}`}
+                    title={video.title}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  />
+                </div>
+                <h3 className="text-xl md:text-2xl font-serif font-semibold text-gray-900 mt-6 mb-3">{video.title}</h3>
+                <p className="text-gray-600 leading-relaxed whitespace-pre-line">{video.caption}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Gallery */}
+      <section className="py-16 md:py-20 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Admin upload */}
           {isAdmin && (
             <div className="text-center mb-8">
@@ -266,16 +366,6 @@ const Gallery: React.FC = () => {
             </div>
           )}
 
-          {filteredItems.length === 0 && !loading && (
-            <div className="text-center py-20 text-gray-500">
-              <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                <circle cx="8.5" cy="8.5" r="1.5" />
-                <polyline points="21 15 16 10 5 21" />
-              </svg>
-              <p>No images in this category yet.</p>
-            </div>
-          )}
         </div>
       </section>
 
@@ -316,6 +406,28 @@ const Gallery: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Testimonials */}
+      <section id="testimonials" className="py-16 md:py-20 bg-gray-50 scroll-mt-24">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-4">Testimonials</h2>
+            <p className="text-gray-600">Real stories from members of our ministry</p>
+          </div>
+          <div className="space-y-8">
+            {displayTestimonials.map((t) => (
+              <article key={t.id} className="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-gray-100">
+                <svg className="w-10 h-10 text-primary-400 mb-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                </svg>
+                <p className="text-gray-700 leading-relaxed whitespace-pre-line mb-6">{t.full}</p>
+                <div className="font-semibold text-primary-700">{t.author}</div>
+                <div className="text-gray-500 text-sm">{t.role}</div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* CTA - Submit Photos */}
       <section className="py-16 md:py-20 bg-white">

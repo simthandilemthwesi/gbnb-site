@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
 import { db } from '../services/firebase';
+import { testimonials } from '../data/testimonials';
 
 const Home: React.FC = () => {
   const [announcements, setAnnouncements] = useState<any[]>([]);
@@ -114,38 +115,43 @@ const Home: React.FC = () => {
     }
   ];
 
-  const testimonials = [
-    {
-      quote: "This organization has transformed my life through their faith-based programs and community support.",
-      author: "Community Member",
-      role: "Volunteer since 2024"
-    },
-    {
-      quote: "The youth programs have given my children a sense of purpose and belonging. Truly grateful.",
-      author: "Parent",
-      role: "Program Participant"
-    },
-    {
-      quote: "Serving with GNB NPC has been a blessing. Together we make a difference in our community.",
-      author: "Dedicated Volunteer",
-      role: "Team Leader"
-    }
-  ];
-
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [dbTestimonials, setDbTestimonials] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const q = query(collection(db, 'testimonials'), orderBy('order', 'asc'));
+        const snapshot = await getDocs(q);
+        setDbTestimonials(snapshot.docs.map((d) => ({ id: d.id, ...d.data() })));
+      } catch (error) {
+        console.log('Using default testimonials');
+      }
+    };
+    fetchTestimonials();
+  }, []);
+
+  const displayTestimonials = dbTestimonials.length > 0 ? dbTestimonials : testimonials;
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+      setCurrentTestimonial((prev) => (prev + 1) % displayTestimonials.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, [testimonials.length]);
+  }, [displayTestimonials.length]);
 
   return (
     <>
       <Helmet>
         <title>George Bakhanyiselwa Nguwe Bawo NPC | Guided by Faith, United in Purpose</title>
         <meta name="description" content="George Bakhanyiselwa Nguwe Bawo NPC - Faith-based nonprofit organization. Guided by Faith, United in Purpose. Join us in building community through faith, fellowship, and service in South Africa." />
+        <meta property="og:url" content="https://bakhanyiselwa.web.app" />
+        <meta property="og:title" content="George Bakhanyiselwa Nguwe Bawo NPC | Guided by Faith, United in Purpose" />
+        <meta property="og:description" content="Faith-based nonprofit organization serving communities through spiritual growth, youth empowerment, and community development in South Africa." />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="George Bakhanyiselwa Nguwe Bawo NPC | Guided by Faith, United in Purpose" />
+        <meta name="twitter:description" content="Faith-based nonprofit organization serving communities through spiritual growth, youth empowerment, and community development in South Africa." />
       </Helmet>
 
       {/* Hero Section - Stunning & Professional */}
@@ -467,7 +473,7 @@ const Home: React.FC = () => {
       <section className="py-20 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What People Say</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Testimonials</h2>
           </div>
           
           <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-gray-100">
@@ -475,19 +481,22 @@ const Home: React.FC = () => {
               <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
             </svg>
             <p className="text-xl md:text-2xl text-gray-700 mb-6 leading-relaxed text-center">
-              "{testimonials[currentTestimonial].quote}"
+              "{displayTestimonials[currentTestimonial].preview}"
             </p>
             <div className="text-center">
-              <div className="font-semibold text-blue-900">
-                {testimonials[currentTestimonial].author}
-              </div>
+              <Link
+                to="/gallery#testimonials"
+                className="inline-block font-semibold text-blue-600 hover:text-blue-700 mb-3"
+              >
+                {displayTestimonials[currentTestimonial].author} — Read more
+              </Link>
               <div className="text-gray-500 text-sm">
-                {testimonials[currentTestimonial].role}
+                {displayTestimonials[currentTestimonial].role}
               </div>
             </div>
             
             <div className="flex justify-center gap-2 mt-8">
-              {testimonials.map((_, index) => (
+              {displayTestimonials.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentTestimonial(index)}

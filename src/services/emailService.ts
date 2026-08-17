@@ -1,12 +1,12 @@
-const WEB3FORMS_ACCESS_KEY = '5520a86f-622c-448c-9837-599df1ac0d62';
+const WEB3FORMS_DEFAULT_ACCESS_KEY = '5520a86f-622c-448c-9837-599df1ac0d62';
 const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
 
 export const initEmailJS = () => {};
 
-const submitToWeb3Forms = async (formType: string, data: Record<string, unknown>, captchaToken?: string) => {
+const submitToWeb3Forms = async (formType: string, data: Record<string, unknown>, captchaToken?: string, accessKey?: string) => {
   const form = new FormData();
-  form.append('access_key', WEB3FORMS_ACCESS_KEY);
-  form.append('subject', `${formType} Submission - GBN NPC`);
+  form.append('access_key', accessKey || WEB3FORMS_DEFAULT_ACCESS_KEY);
+  form.append('subject', `${formType} Submission - GBNB NPC`);
   form.append('from_name', String(data.fullName || data.name || data.donorName || data.contactPerson || 'Anonymous'));
   form.append('from_email', String(data.email || ''));
   form.append('message', formatFormData(formType, data));
@@ -31,9 +31,9 @@ const submitToWeb3Forms = async (formType: string, data: Record<string, unknown>
   }
 };
 
-export const sendFormNotification = async (formType: string, formData: Record<string, unknown>, captchaToken?: string) => {
+export const sendFormNotification = async (formType: string, formData: Record<string, unknown>, captchaToken?: string, accessKey?: string) => {
   try {
-    await submitToWeb3Forms(formType, formData, captchaToken);
+    await submitToWeb3Forms(formType, formData, captchaToken, accessKey);
     console.log(`Email notification sent for ${formType}`);
   } catch (error) {
     console.error('Failed to send email notification:', error);
@@ -85,9 +85,9 @@ const formatFormData = (formType: string, data: Record<string, unknown>): string
   return lines.join('\n');
 };
 
-export const notifyAdmin = async (type: string, data: any, captchaToken?: string) => {
+export const notifyAdmin = async (type: string, data: any, captchaToken?: string, accessKey?: string) => {
   try {
-    await submitToWeb3Forms(type, data, captchaToken);
+    await submitToWeb3Forms(type, data, captchaToken, accessKey);
     console.log(`Email notification sent for ${type}`);
   } catch (error) {
     console.error('Failed to send email notification:', error);

@@ -70,6 +70,13 @@ const About: React.FC = () => {
       <Helmet>
         <title>About Us | George Bakhanyiselwa Nguwe Bawo NPC</title>
         <meta name="description" content="Learn about our mission, vision, and the history of George Bakhanyiselwa Nguwe Bawo NPC - a faith-based nonprofit organization." />
+        <meta property="og:url" content="https://bakhanyiselwa.web.app/about" />
+        <meta property="og:title" content="About Us | George Bakhanyiselwa Nguwe Bawo NPC" />
+        <meta property="og:description" content="Learn about our mission, vision, and the history of George Bakhanyiselwa Nguwe Bawo NPC - a faith-based nonprofit organization." />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="About Us | George Bakhanyiselwa Nguwe Bawo NPC" />
+        <meta name="twitter:description" content="Learn about our mission, vision, and the history of George Bakhanyiselwa Nguwe Bawo NPC - a faith-based nonprofit organization." />
       </Helmet>
 
       {/* Header */}
