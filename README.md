@@ -360,7 +360,7 @@ Private - George Bakhanyiselwa Nguwe Bawo NPC
 
 ---
 
-**Built with ❤️ and ☕**
+**Built with ❤️ by Simthandile Mthwesi**
 =======
 # gbnb-site
 "Yizani Sakhe Udonga Lwe Jerusalem"  Guided by Faith, United in Purpose
