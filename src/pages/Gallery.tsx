@@ -332,6 +332,10 @@ const Gallery: React.FC = () => {
             <div className="flex justify-center py-20">
               <div className="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
             </div>
+          ) : filteredItems.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500">Our photo gallery is coming soon — check back for moments from our events and community outreach.</p>
+            </div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
               {filteredItems.map((item) => (
