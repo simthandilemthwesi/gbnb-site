@@ -330,8 +330,8 @@ const GetInvolved: React.FC = () => {
           </div>
 
           <div className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl p-6 md:p-8 text-white mb-8">
-            <h3 className="text-xl font-serif font-bold mb-4">Bank Details</h3>
-            <div className="space-y-2 text-white/90">
+            <h3 className="text-xl font-serif font-bold mb-4 text-white">Bank Details</h3>
+            <div className="space-y-2 text-white">
               <p><strong>Bank:</strong> First National Bank (FNB)</p>
               <p><strong>Account Name:</strong> George Bakhanyiselwa Nguwe Bawo NPC</p>
               <p><strong>Account Number:</strong> 6306 4661 490</p>
