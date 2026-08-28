@@ -4,6 +4,7 @@ node_modules/
 # Build output
 build/
 dist/
+functions/lib/
 
 # Firebase
 .firebase/
@@ -14,6 +15,8 @@ firestore-debug.log
 .env
 .env.local
 .env.*.local
+functions/.env
+functions/.runtimeconfig.json
 
 # Logs
 *.log

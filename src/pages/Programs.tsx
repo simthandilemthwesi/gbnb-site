@@ -153,9 +153,9 @@ const Programs: React.FC = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
               { number: '3+', label: 'Years of Service' },
-              { number: '100+', label: 'Volunteers' },
-              { number: '500+', label: 'Lives Impacted' },
-              { number: '7', label: 'Core Programs' }
+              { number: '400+', label: 'Volunteers & Memberships' },
+              { number: '1000+', label: 'Lives Impacted' },
+              { number: '8', label: 'Core Programs' }
             ].map((stat, index) => (
               <div key={index} className="text-center p-6">
                 <div className="text-4xl font-serif font-bold text-primary-500 mb-2">{stat.number}</div>

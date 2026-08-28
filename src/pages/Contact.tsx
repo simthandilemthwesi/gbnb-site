@@ -9,15 +9,21 @@ import Captcha from '../components/Captcha';
 interface ContactFormData {
   name: string;
   email: string;
-  subject: string;
   message: string;
 }
+
+interface ContactErrors {
+  name?: string;
+  email?: string;
+  message?: string;
+}
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
-    subject: '',
     message: ''
   });
   const [submitting, setSubmitting] = useState(false);
@@ -25,9 +31,26 @@ const Contact: React.FC = () => {
   const [error, setError] = useState('');
   const [captchaToken, setCaptchaToken] = useState('');
   const [captchaKey, setCaptchaKey] = useState(0);
+  const [errors, setErrors] = useState<ContactErrors>({});
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const validationErrors: ContactErrors = {};
+    if (!formData.name.trim()) {
+      validationErrors.name = 'Please enter your name';
+    }
+    if (!formData.email.trim()) {
+      validationErrors.email = 'Please enter a valid email address';
+    } else if (!EMAIL_REGEX.test(formData.email)) {
+      validationErrors.email = 'Please enter a valid email address';
+    }
+    if (!formData.message.trim()) {
+      validationErrors.message = 'Please enter your message';
+    }
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
     if (!captchaToken) {
       setError('Please complete the captcha to verify you are human.');
       return;
@@ -42,19 +65,20 @@ const Contact: React.FC = () => {
         createdAt: Timestamp.now(),
         status: 'new'
       });
-      
+
       // Send notification
       await notifyAdmin('Contact', formData, captchaToken);
-      
-      setSuccess('Thank you for your message! We will get back to you soon.');
+
+      setSuccess("Thank you for contacting us! We'll respond shortly.");
       setFormData({
         name: '',
         email: '',
-        subject: '',
         message: ''
       });
+      setErrors({});
       setCaptchaToken('');
       setCaptchaKey((prev) => prev + 1);
+      setTimeout(() => { window.location.href = '/thank-you?form=contact'; }, 1500);
     } catch (err) {
       setError('Failed to send message. Please try again.');
     } finally {
@@ -193,45 +217,46 @@ const Contact: React.FC = () => {
                   <label className="label">Your Name *</label>
                   <input
                     type="text"
+                    name="name"
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    placeholder="Enter your name"
+                    placeholder="Your Name * Enter your name"
                     className="input"
                   />
+                  {errors.name && (
+                    <span className="text-sm text-red-600 mt-1 block">{errors.name}</span>
+                  )}
                 </div>
                 <div>
                   <label className="label">Email Address *</label>
                   <input
                     type="email"
+                    name="email"
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
-                    placeholder="your.email@example.com"
+                    placeholder="Email Address * your.email@example.com"
                     className="input"
                   />
-                </div>
-                <div>
-                  <label className="label">Subject *</label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.subject}
-                    onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                    placeholder="How can we help?"
-                    className="input"
-                  />
+                  {errors.email && (
+                    <span className="text-sm text-red-600 mt-1 block">{errors.email}</span>
+                  )}
                 </div>
                 <div>
                   <label className="label">Message *</label>
                   <textarea
                     rows={5}
+                    name="message"
                     required
                     value={formData.message}
                     onChange={(e) => setFormData({...formData, message: e.target.value})}
-                    placeholder="Your message..."
+                    placeholder="Message * Your message... Subject * How can we help?"
                     className="input resize-none"
                   />
+                  {errors.message && (
+                    <span className="text-sm text-red-600 mt-1 block">{errors.message}</span>
+                  )}
                 </div>
                 <div className="flex justify-center">
                   <Captcha
@@ -245,7 +270,7 @@ const Contact: React.FC = () => {
                   className="w-full py-4 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-glow"
                   disabled={submitting}
                 >
-                  {submitting ? 'Sending...' : 'Send Message'}
+                  {submitting ? 'Sending...' : 'Submit Form'}
                 </button>
               </form>
             </div>

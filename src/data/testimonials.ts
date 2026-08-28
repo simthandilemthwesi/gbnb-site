@@ -43,9 +43,9 @@ Amen, saints.`
 
 My name is Mrs Mjingwana Makhumalo, from the Eastern Cape, in the Whittlesea area, in the villages of Hewu, Lower Didimana.
 
-I would like to share a short testimony about Bakhanyiselwa Nguwe Bawo (GBB).
+I would like to share a short testimony about George Bakhanyiselwa Nguwe Bawo (GBNB).
 
-I came across this ministry on social media towards the end of 2023. I met Mama Ngcenge, whom I worship with, and as we were talking and sharing some of the challenges we were facing, she told me about the GBB ministry.
+I came across this ministry on social media towards the end of 2023. I met Mama Ngcenge, whom I worship with, and as we were talking and sharing some of the challenges we were facing, she told me about the GBNB ministry.
 
 I became very interested, and she connected me with its founder, Mama Mthwesi.
 

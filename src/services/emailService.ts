@@ -1,15 +1,24 @@
-const WEB3FORMS_DEFAULT_ACCESS_KEY = '5520a86f-622c-448c-9837-599df1ac0d62';
 const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
+
+const FORM_KEYS: Record<string, string> = {
+  Volunteer: process.env.REACT_APP_WEB3FORMS_VOLUNTEER_KEY || '7a92fa81-92b5-4258-9aee-6a50988dc80c',
+  Donation: process.env.REACT_APP_WEB3FORMS_DONATION_KEY || 'da4fb039-b681-4c52-beda-2c3e9e680ef5',
+  Contact: process.env.REACT_APP_WEB3FORMS_CONTACT_KEY || '5520a86f-622c-448c-9837-599df1ac0d62',
+  'Photo Submission': process.env.REACT_APP_WEB3FORMS_PHOTO_KEY || '8d26c6af-52ec-4fe0-8ddc-bc89f01362ee'
+};
 
 export const initEmailJS = () => {};
 
 const submitToWeb3Forms = async (formType: string, data: Record<string, unknown>, captchaToken?: string, accessKey?: string) => {
   const form = new FormData();
-  form.append('access_key', accessKey || WEB3FORMS_DEFAULT_ACCESS_KEY);
+  form.append('access_key', accessKey || FORM_KEYS[formType] || '');
   form.append('subject', `${formType} Submission - GBNB NPC`);
   form.append('from_name', String(data.fullName || data.name || data.donorName || data.contactPerson || 'Anonymous'));
   form.append('from_email', String(data.email || ''));
   form.append('message', formatFormData(formType, data));
+  if (typeof window !== 'undefined') {
+    form.append('redirect', `${window.location.origin}/thank-you`);
+  }
 
   if (captchaToken) {
     form.append('h-captcha-response', captchaToken);

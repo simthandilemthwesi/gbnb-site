@@ -7,57 +7,41 @@ import { notifyAdmin } from '../services/emailService';
 import Captcha from '../components/Captcha';
 
 interface VolunteerFormData {
-  fullName: string;
+  name: string;
   email: string;
-  phone: string;
-  skills: string;
-  availability: string;
   message: string;
 }
 
 interface DonationFormData {
-  donorName: string;
+  name: string;
   email: string;
-  amount: string;
-  currency: string;
   message: string;
 }
 
 interface VolunteerErrors {
-  fullName?: string;
+  name?: string;
   email?: string;
-  phone?: string;
-  skills?: string;
-  availability?: string;
   message?: string;
-  captcha?: string;
 }
 
 interface DonationErrors {
-  donorName?: string;
+  name?: string;
   email?: string;
-  amount?: string;
-  currency?: string;
-  message?: string;
-  captcha?: string;
 }
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const PARTNERSHIP_FORM_URL = 'https://form.jotform.com/262223901730044';
 
 const GetInvolved: React.FC = () => {
   const [volunteerForm, setVolunteerForm] = useState<VolunteerFormData>({
-    fullName: '',
+    name: '',
     email: '',
-    phone: '',
-    skills: '',
-    availability: '',
     message: ''
   });
   const [donationForm, setDonationForm] = useState<DonationFormData>({
-    donorName: '',
+    name: '',
     email: '',
-    amount: '',
-    currency: 'ZAR',
     message: ''
   });
   const [submitting, setSubmitting] = useState(false);
@@ -71,6 +55,22 @@ const GetInvolved: React.FC = () => {
 
   const handleVolunteerSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const errors: VolunteerErrors = {};
+    if (!volunteerForm.name.trim()) {
+      errors.name = 'Please enter your full name';
+    }
+    if (!volunteerForm.email.trim()) {
+      errors.email = 'Please enter a valid email address';
+    } else if (!EMAIL_REGEX.test(volunteerForm.email)) {
+      errors.email = 'Please enter a valid email address';
+    }
+    if (!volunteerForm.message.trim()) {
+      errors.message = "Please tell us why you'd like to volunteer";
+    }
+    if (Object.keys(errors).length > 0) {
+      setVolunteerErrors(errors);
+      return;
+    }
     if (!volunteerCaptcha) {
       setError('Please complete the captcha to verify you are human.');
       return;
@@ -85,19 +85,14 @@ const GetInvolved: React.FC = () => {
         createdAt: Timestamp.now(),
         status: 'pending'
       });
-      
-      await notifyAdmin('Volunteer', volunteerForm, volunteerCaptcha, '7a92fa81-92b5-4258-9aee-6a50988dc80c');
-      setSuccess('Thank you for volunteering! We will be in touch soon.');
-      setVolunteerForm({
-        fullName: '',
-        email: '',
-        phone: '',
-        skills: '',
-        availability: '',
-        message: ''
-      });
+
+      await notifyAdmin('Volunteer', volunteerForm, volunteerCaptcha);
+      setSuccess("Thank you for volunteering! We'll be in touch soon.");
+      setVolunteerForm({ name: '', email: '', message: '' });
+      setVolunteerErrors({});
       setVolunteerCaptcha('');
       setCaptchaKeys((prev) => ({ ...prev, volunteer: prev.volunteer + 1 }));
+      setTimeout(() => { window.location.href = '/thank-you?form=volunteer'; }, 1500);
     } catch (err) {
       setError('Failed to submit. Please try again.');
     } finally {
@@ -107,6 +102,19 @@ const GetInvolved: React.FC = () => {
 
   const handleDonationSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const errors: DonationErrors = {};
+    if (!donationForm.name.trim()) {
+      errors.name = 'Please enter your name';
+    }
+    if (!donationForm.email.trim()) {
+      errors.email = 'Please enter a valid email address';
+    } else if (!EMAIL_REGEX.test(donationForm.email)) {
+      errors.email = 'Please enter a valid email address';
+    }
+    if (Object.keys(errors).length > 0) {
+      setDonationErrors(errors);
+      return;
+    }
     if (!donationCaptcha) {
       setError('Please complete the captcha to verify you are human.');
       return;
@@ -118,22 +126,17 @@ const GetInvolved: React.FC = () => {
     try {
       await addDoc(collection(db, 'donations'), {
         ...donationForm,
-        amount: parseFloat(donationForm.amount),
         createdAt: Timestamp.now(),
         status: 'pending'
       });
-      
-      await notifyAdmin('Donation', donationForm, donationCaptcha, 'da4fb039-b681-4c52-beda-2c3e9e680ef5');
-      setSuccess('Thank you for your generous donation! We will contact you with payment details.');
-      setDonationForm({
-        donorName: '',
-        email: '',
-        amount: '',
-        currency: 'ZAR',
-        message: ''
-      });
+
+      await notifyAdmin('Donation', donationForm, donationCaptcha);
+      setSuccess('Thank you for your donation! Your details have been submitted.');
+      setDonationForm({ name: '', email: '', message: '' });
+      setDonationErrors({});
       setDonationCaptcha('');
       setCaptchaKeys((prev) => ({ ...prev, donation: prev.donation + 1 }));
+      setTimeout(() => { window.location.href = '/thank-you?form=donation'; }, 1500);
     } catch (err) {
       setError('Failed to submit. Please try again.');
     } finally {
@@ -219,7 +222,7 @@ const GetInvolved: React.FC = () => {
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-4">Ways to Make a Difference</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">Your involvement helps us create lasting positive change</p>
           </div>
-          
+
           <div className="grid md:grid-cols-3 gap-6">
             {involvementOptions.map((option, index) => (
               <div key={index} className="group relative bg-white rounded-2xl p-8 border border-gray-100 shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-1 text-center">
@@ -242,7 +245,7 @@ const GetInvolved: React.FC = () => {
             <h2 className="text-2xl font-serif font-bold text-gray-900 mb-2">Volunteer With Us</h2>
             <p className="text-gray-600">Share your time and talents to serve our community</p>
           </div>
-          
+
           {success && (
             <div className="p-4 mb-6 bg-green-50 border border-green-200 text-green-700 rounded-xl">
               {success}
@@ -255,75 +258,50 @@ const GetInvolved: React.FC = () => {
           )}
 
           <form onSubmit={handleVolunteerSubmit} className="bg-white rounded-2xl p-6 md:p-8 shadow-soft space-y-4">
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <label className="label">Full Name *</label>
-                <input
-                  type="text"
-                  required
-                  value={volunteerForm.fullName}
-                  onChange={(e) => setVolunteerForm({...volunteerForm, fullName: e.target.value})}
-                  placeholder="Enter your full name"
-                  className="input"
-                />
-              </div>
-              <div>
-                <label className="label">Email *</label>
-                <input
-                  type="email"
-                  required
-                  value={volunteerForm.email}
-                  onChange={(e) => setVolunteerForm({...volunteerForm, email: e.target.value})}
-                  placeholder="your.email@example.com"
-                  className="input"
-                />
-              </div>
-            </div>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <label className="label">Phone Number</label>
-                <input
-                  type="tel"
-                  value={volunteerForm.phone}
-                  onChange={(e) => setVolunteerForm({...volunteerForm, phone: e.target.value})}
-                  placeholder="+27 XX XXX XXXX"
-                  className="input"
-                />
-              </div>
-              <div>
-                <label className="label">Skills/Expertise</label>
-                <input
-                  type="text"
-                  value={volunteerForm.skills}
-                  onChange={(e) => setVolunteerForm({...volunteerForm, skills: e.target.value})}
-                  placeholder="e.g., Teaching, Music"
-                  className="input"
-                />
-              </div>
-            </div>
             <div>
-              <label className="label">Availability</label>
-              <select
-                value={volunteerForm.availability}
-                onChange={(e) => setVolunteerForm({...volunteerForm, availability: e.target.value})}
+              <label className="label">Full Name *</label>
+              <input
+                type="text"
+                name="name"
+                required
+                value={volunteerForm.name}
+                onChange={(e) => setVolunteerForm({ ...volunteerForm, name: e.target.value })}
+                placeholder="Full Name * Enter your full name"
                 className="input"
-              >
-                <option value="">Select your availability</option>
-                <option value="weekdays">Weekdays</option>
-                <option value="weekends">Weekends</option>
-                <option value="evenings">Evenings</option>
-                <option value="flexible">Flexible</option>
-              </select>
+              />
+              {volunteerErrors.name && (
+                <span className="text-sm text-red-600 mt-1 block">{volunteerErrors.name}</span>
+              )}
             </div>
             <div>
-              <label className="label">Message</label>
+              <label className="label">Email *</label>
+              <input
+                type="email"
+                name="email"
+                required
+                value={volunteerForm.email}
+                onChange={(e) => setVolunteerForm({ ...volunteerForm, email: e.target.value })}
+                placeholder="Email * your.email@example.com"
+                className="input"
+              />
+              {volunteerErrors.email && (
+                <span className="text-sm text-red-600 mt-1 block">{volunteerErrors.email}</span>
+              )}
+            </div>
+            <div>
+              <label className="label">Message *</label>
               <textarea
                 rows={4}
+                name="message"
+                required
                 value={volunteerForm.message}
-                onChange={(e) => setVolunteerForm({...volunteerForm, message: e.target.value})}
-                placeholder="Tell us why you'd like to volunteer..."
+                onChange={(e) => setVolunteerForm({ ...volunteerForm, message: e.target.value })}
+                placeholder={'Message * Tell us why you\'d like to volunteer...\n  Write message like this:\n  My name is..., Email..., Skills/Expertise e.g., Teaching, Music\n  Availability e.g., weekdays, weekend, evenings or flexible'}
                 className="input resize-none"
               />
+              {volunteerErrors.message && (
+                <span className="text-sm text-red-600 mt-1 block">{volunteerErrors.message}</span>
+              )}
             </div>
             <div className="flex justify-center">
               <Captcha
@@ -332,8 +310,8 @@ const GetInvolved: React.FC = () => {
                 onExpire={() => setVolunteerCaptcha('')}
               />
             </div>
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="w-full py-4 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-glow disabled:opacity-50"
               disabled={submitting}
             >
@@ -350,7 +328,7 @@ const GetInvolved: React.FC = () => {
             <h2 className="text-2xl font-serif font-bold text-gray-900 mb-2">Make a Donation</h2>
             <p className="text-gray-600">Your generous contribution supports our mission</p>
           </div>
-          
+
           <div className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl p-6 md:p-8 text-white mb-8">
             <h3 className="text-xl font-serif font-bold mb-4">Bank Details</h3>
             <div className="space-y-2 text-white/90">
@@ -363,64 +341,44 @@ const GetInvolved: React.FC = () => {
           </div>
 
           <form onSubmit={handleDonationSubmit} className="bg-white rounded-2xl p-6 md:p-8 shadow-soft space-y-4">
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <label className="label">Your Name *</label>
-                <input
-                  type="text"
-                  required
-                  value={donationForm.donorName}
-                  onChange={(e) => setDonationForm({...donationForm, donorName: e.target.value})}
-                  placeholder="Enter your name"
-                  className="input"
-                />
-              </div>
-              <div>
-                <label className="label">Email *</label>
-                <input
-                  type="email"
-                  required
-                  value={donationForm.email}
-                  onChange={(e) => setDonationForm({...donationForm, email: e.target.value})}
-                  placeholder="your.email@example.com"
-                  className="input"
-                />
-              </div>
+            <div>
+              <label className="label">Your Name *</label>
+              <input
+                type="text"
+                name="name"
+                required
+                value={donationForm.name}
+                onChange={(e) => setDonationForm({ ...donationForm, name: e.target.value })}
+                placeholder="Your Name * Enter your name"
+                className="input"
+              />
+              {donationErrors.name && (
+                <span className="text-sm text-red-600 mt-1 block">{donationErrors.name}</span>
+              )}
             </div>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <label className="label">Amount *</label>
-                <input
-                  type="number"
-                  required
-                  min="1"
-                  value={donationForm.amount}
-                  onChange={(e) => setDonationForm({...donationForm, amount: e.target.value})}
-                  placeholder="Enter amount"
-                  className="input"
-                />
-              </div>
-              <div>
-                <label className="label">Currency</label>
-                <select
-                  value={donationForm.currency}
-                  onChange={(e) => setDonationForm({...donationForm, currency: e.target.value})}
-                  className="input"
-                >
-                  <option value="ZAR">ZAR (South African Rand)</option>
-                  <option value="USD">USD (US Dollar)</option>
-                  <option value="EUR">EUR (Euro)</option>
-                  <option value="GBP">GBP (British Pound)</option>
-                </select>
-              </div>
+            <div>
+              <label className="label">Email *</label>
+              <input
+                type="email"
+                name="email"
+                required
+                value={donationForm.email}
+                onChange={(e) => setDonationForm({ ...donationForm, email: e.target.value })}
+                placeholder="Email * your.email@example.com"
+                className="input"
+              />
+              {donationErrors.email && (
+                <span className="text-sm text-red-600 mt-1 block">{donationErrors.email}</span>
+              )}
             </div>
             <div>
               <label className="label">Message (Optional)</label>
               <textarea
                 rows={3}
+                name="message"
                 value={donationForm.message}
-                onChange={(e) => setDonationForm({...donationForm, message: e.target.value})}
-                placeholder="Leave a message with your donation..."
+                onChange={(e) => setDonationForm({ ...donationForm, message: e.target.value })}
+                placeholder={'Message (Optional)* Leave a message with your donation...\n  (e.g. Hi, Your Full Name, I have donated Currency, Amount Currency)'}
                 className="input resize-none"
               />
             </div>
@@ -431,8 +389,8 @@ const GetInvolved: React.FC = () => {
                 onExpire={() => setDonationCaptcha('')}
               />
             </div>
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-glow disabled:opacity-50"
               disabled={submitting}
             >
@@ -483,8 +441,8 @@ const GetInvolved: React.FC = () => {
           <p className="text-white/80 mb-8 max-w-2xl mx-auto">
             We're here to help you find the best way to contribute to our mission.
           </p>
-          <Link 
-            to="/contact" 
+          <Link
+            to="/contact"
             className="inline-block px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-glow hover:-translate-y-1"
           >
             Contact Us

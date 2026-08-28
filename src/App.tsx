@@ -10,6 +10,7 @@ import Programs from './pages/Programs';
 import Gallery from './pages/Gallery';
 import GetInvolved from './pages/GetInvolved';
 import Contact from './pages/Contact';
+import ThankYou from './pages/ThankYou';
 import Admin from './pages/Admin';
 import FirebaseSetup from './pages/FirebaseSetup';
 import AdminProtectedRoute from './components/AdminProtectedRoute';
@@ -173,6 +174,7 @@ const App: React.FC = () => {
               <Route path="/gallery" element={<><GallerySEO /><Gallery /></>} />
               <Route path="/get-involved" element={<><GetInvolvedSEO /><GetInvolved /></>} />
               <Route path="/contact" element={<><ContactSEO /><Contact /></>} />
+              <Route path="/thank-you" element={<ThankYou />} />
               <Route
                 path="/admin"
                 element={

@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
     "module": "commonjs",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "outDir": "lib",

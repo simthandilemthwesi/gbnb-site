@@ -213,6 +213,7 @@ const Gallery: React.FC = () => {
       await notifyAdmin('Photo Submission', submitData, captchaToken);
       setCaptchaToken('');
       setCaptchaKey((prev) => prev + 1);
+      setTimeout(() => { window.location.href = '/thank-you?form=photo'; }, 1500);
     } catch (error) {
       console.error('Submit error:', error);
       setSubmitError('Failed to submit photos. Please try again.');

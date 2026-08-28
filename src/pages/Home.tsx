@@ -70,8 +70,13 @@ const Home: React.FC = () => {
   const defaultAnnouncements = [
     {
       title: '3rd Year Anniversary Celebration',
-      content: 'Join us as we celebrate three years of faith, fellowship, and community service.',
-      date: '2026'
+      content: 'Bakhanyiselwa celebrates its third anniversary in February 2026 — three years of faith, fellowship, and community service.',
+      date: 'February 2026'
+    },
+    {
+      title: 'Closing the Year in Thundergate',
+      content: 'We will be closing the year in October 2026 at Thundergate, Ntabethemba, Komani, Eastern Cape. Join us as we give thanks and reflect on the year.',
+      date: 'October 2026'
     },
     {
       title: 'Youth & Elderly Engagement Program',
@@ -87,9 +92,9 @@ const Home: React.FC = () => {
 
   const stats = [
     { number: '3+', label: 'Years of Service' },
-    { number: '100+', label: 'Volunteers' },
-    { number: '5', label: 'Core Programs' },
-    { number: '500+', label: 'Lives Impacted' }
+    { number: '400+', label: 'Volunteers & Memberships' },
+    { number: '1000+', label: 'Lives Impacted' },
+    { number: '8', label: 'Core Programs' }
   ];
 
   const programs = [
