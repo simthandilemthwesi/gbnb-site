@@ -1,8 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
+  const [currentTime, setCurrentTime] = useState('');
+
+  useEffect(() => {
+    const updateTime = () => {
+      setCurrentTime(new Date().toLocaleTimeString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+      }));
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const quickLinks = [
     { path: '/', label: 'Home' },
@@ -110,7 +125,10 @@ const Footer: React.FC = () => {
         <div className="border-t border-primary-700 mt-10 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm text-accent-300">
-              &copy; {currentYear} George Bakhanyiselwa Nguwe Bawo NPC. All rights reserved.
+              &copy; {currentYear} George Bakhanyiselwa Nguwe Bawo NPC. All rights reserved.{' '}
+              <span className="font-medium" style={{ color: 'currentColor' }}>
+                {currentTime}
+              </span>
             </p>
             <a
               href="https://simthandilemthwesi.vercel.app"
