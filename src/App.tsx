@@ -11,10 +11,12 @@ import Gallery from './pages/Gallery';
 import GetInvolved from './pages/GetInvolved';
 import Contact from './pages/Contact';
 import ThankYou from './pages/ThankYou';
+import Calendar from './pages/Calendar';
 import Admin from './pages/Admin';
 import FirebaseSetup from './pages/FirebaseSetup';
 import AdminProtectedRoute from './components/AdminProtectedRoute';
 import Chatbot from './components/Chatbot';
+import GoogleTranslate from './components/GoogleTranslate';
 import './index.css';
 
 const BASE_URL = 'https://bakhanyiselwa.web.app';
@@ -164,7 +166,8 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-        <div className="app">
+        <div className="app pt-7">
+          <GoogleTranslate />
           <Navbar />
           <main>
             <Routes>
@@ -175,6 +178,7 @@ const App: React.FC = () => {
               <Route path="/get-involved" element={<><GetInvolvedSEO /><GetInvolved /></>} />
               <Route path="/contact" element={<><ContactSEO /><Contact /></>} />
               <Route path="/thank-you" element={<ThankYou />} />
+              <Route path="/calendar" element={<Calendar />} />
               <Route
                 path="/admin"
                 element={

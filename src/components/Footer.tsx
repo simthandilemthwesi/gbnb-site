@@ -12,6 +12,7 @@ const Footer: React.FC = () => {
         minute: '2-digit',
         second: '2-digit',
         hour12: false,
+        timeZone: 'Africa/Johannesburg',
       }));
     };
     updateTime();
@@ -97,6 +98,12 @@ const Footer: React.FC = () => {
                 </svg>
                 <span>bakhanyiselwa.web.app</span>
               </li>
+              <li className="flex items-center gap-3">
+                <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.4 2 2 6.4 2 12s4.4 10 10 10 10-4.4 10-10S17.6 2 12 2zm4.4 10H13v3.4c0 .4-.3.7-.7.7s-.7-.3-.7-.7V12c0-.4.3-.7.7-.7h4.4c.4 0 .7.3.7.7s-.3.7-.7.7z" />
+                </svg>
+                <a href="https://www.tiktok.com/@georgebakhanyiselwanguwe" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors underline-offset-2 hover:underline">TikTok @georgebakhanyiselwanguwe</a>
+              </li>
             </ul>
           </div>
 
@@ -125,10 +132,8 @@ const Footer: React.FC = () => {
         <div className="border-t border-primary-700 mt-10 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm text-accent-300">
-              &copy; {currentYear} George Bakhanyiselwa Nguwe Bawo NPC. All rights reserved.{' '}
-              <span className="font-medium" style={{ color: 'currentColor' }}>
-                {currentTime}
-              </span>
+              &copy; 2023 - {currentYear} George Bakhanyiselwa Nguwe Bawo NPC. All rights reserved.{' '}
+              <span className="font-medium text-white ml-1">CAT {currentTime}</span>
             </p>
             <a
               href="https://simthandilemthwesi.vercel.app"

@@ -25,6 +25,7 @@ const Navbar: React.FC = () => {
     { path: '/about', label: 'About' },
     { path: '/programs', label: 'Programs' },
     { path: '/gallery', label: 'Gallery' },
+    { path: '/calendar', label: 'Calendar' },
     { path: '/get-involved', label: 'Get Involved' },
     { path: '/contact', label: 'Contact' },
   ];
@@ -41,7 +42,7 @@ const Navbar: React.FC = () => {
 
   return (
     <nav 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-7 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
           ? 'bg-white/95 backdrop-blur-md shadow-soft' 
           : 'bg-transparent'
