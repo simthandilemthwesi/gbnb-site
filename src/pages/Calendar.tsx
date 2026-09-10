@@ -45,45 +45,34 @@ const Calendar: React.FC = () => {
 
           {/* Download Instructions */}
           <div className="bg-white rounded-2xl shadow-sm p-8 border border-gray-100">
-            <h2 className="text-xl font-serif font-bold text-gray-900 mb-4">Download Instructions</h2>
-            <ol className="list-decimal ml-6 space-y-3 text-gray-700">
-              <li>
-                Click the <strong className="text-gray-900">Download Calendar (ZIP)</strong> button below.
-              </li>
-              <li>
-                A <strong className="text-gray-900">ZIP file</strong> will be downloaded to your computer.
-              </li>
-              <li>
-                Locate the ZIP file in your <em>Downloads</em> folder.
-              </li>
-              <li>
-                Right‑click the ZIP file and choose <strong className="text-gray-900">Extract All</strong>.
-              </li>
-              <li>
-                Open the extracted folder named <strong className="text-gray-900">George Bakhanyiselwa Nguwe Bawo Calendar</strong>.
-              </li>
-              <li>
-                Inside, you will find two files:
-                <ul className="list-disc ml-6 mt-2 space-y-1">
-                  <li><code className="bg-gray-100 px-2 py-0.5 rounded text-sm">Bakhanyiselwa_Nguwe_bawo_Calendar.jpg</code></li>
-                  <li><code className="bg-gray-100 px-2 py-0.5 rounded text-sm">Bakhanyiselwa_Nguwe_bawo_Calendar.pdf</code></li>
-                </ul>
-              </li>
-            </ol>
+            <h2 className="text-xl font-serif font-bold text-gray-900 mb-6">Download Instructions</h2>
 
-            {/* Download Button */}
-            <div className="mt-8">
-              <a
-                href="https://workdrive.zohoexternal.com/file/a9gtjded82dc1ef8e473bb58c0c33b957aded?download=zip"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-xl font-semibold transition-colors shadow-sm hover:shadow-md"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-                Download Calendar (ZIP)
-              </a>
+            <div className="mb-6">
+              <h3 className="font-semibold text-gray-900 mb-3">📥 Option 1: Download ZIP (Both Files Together)</h3>
+              <ol className="list-decimal ml-6 space-y-2 text-gray-700">
+                <li>Click the <strong className="text-gray-900">Download Calendar (ZIP)</strong> button in the preview toolbar above.</li>
+                <li>A ZIP file will be saved to your phone or computer.</li>
+                <li>Locate the file in your <em>Downloads</em> folder.</li>
+                <li>Right‑click and select <strong className="text-gray-900">Extract All</strong>.</li>
+                <li>Open the extracted folder named <strong className="text-gray-900">George Bakhanyiselwa Nguwe Bawo Calendar</strong>.</li>
+                <li>Inside, you will find:
+                  <ul className="list-disc ml-6 mt-2 space-y-1">
+                    <li><code className="bg-gray-100 px-2 py-0.5 rounded text-sm">Bakhanyiselwa_Nguwe_bawo_Calendar.jpg</code></li>
+                    <li><code className="bg-gray-100 px-2 py-0.5 rounded text-sm">Bakhanyiselwa_Nguwe_bawo_Calendar.pdf</code></li>
+                  </ul>
+                </li>
+              </ol>
+            </div>
+
+            <div className="border-t border-gray-100 pt-6">
+              <h3 className="font-semibold text-gray-900 mb-3">📄 Option 2: Download PDF or Image Only</h3>
+              <ol className="list-decimal ml-6 space-y-2 text-gray-700">
+                <li>In the calendar preview above, click directly on the PDF or Image file.</li>
+                <li>The file will open in a viewer.</li>
+                <li>Look at the top corner of the viewer.</li>
+                <li>Click the <strong className="text-gray-900">Download</strong> button.</li>
+                <li>This will download the selected file alone (either the PDF or the JPG image).</li>
+              </ol>
             </div>
           </div>
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import GoogleTranslate from './GoogleTranslate';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,7 +43,7 @@ const Navbar: React.FC = () => {
 
   return (
     <nav 
-      className={`fixed top-7 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
           ? 'bg-white/95 backdrop-blur-md shadow-soft' 
           : 'bg-transparent'
@@ -109,15 +110,20 @@ const Navbar: React.FC = () => {
                 </button>
               </>
             )}
+            <div className="ml-2">
+              <GoogleTranslate />
+            </div>
           </div>
 
-          <button
-            className={`lg:hidden p-2 rounded-lg transition-colors duration-300 ${
-              isScrolled 
-                ? 'hover:bg-gray-100 text-gray-700' 
-                : 'hover:bg-white/10 text-white'
-            }`}
-            onClick={() => setIsOpen(!isOpen)}
+          <div className="lg:hidden flex items-center gap-2">
+            <GoogleTranslate />
+            <button
+              className={`p-2 rounded-lg transition-colors duration-300 ${
+                isScrolled 
+                  ? 'hover:bg-gray-100 text-gray-700' 
+                  : 'hover:bg-white/10 text-white'
+              }`}
+              onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
             aria-expanded={isOpen}
           >
@@ -143,8 +149,9 @@ const Navbar: React.FC = () => {
                 />
               )}
             </svg>
-          </button>
-        </div>
+           </button>
+           </div>
+         </div>
 
         {isOpen && (
           <div className="lg:hidden pb-4 bg-white/95 backdrop-blur-md rounded-2xl shadow-lg -mx-4 px-4 mt-2">

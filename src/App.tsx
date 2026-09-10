@@ -166,8 +166,7 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-        <div className="app pt-7">
-          <GoogleTranslate />
+        <div className="app">
           <Navbar />
           <main>
             <Routes>
