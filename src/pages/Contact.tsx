@@ -183,7 +183,7 @@ const Contact: React.FC = () => {
         </div>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <nav className="flex items-center gap-2 text-white/60 text-sm mb-6">
-            <Link to="/" className="hover:text-white transition-colors">Home</Link>
+            <Link to="/" className="text-white hover:text-white transition-colors">Home</Link>
             <span>/</span>
             <span className="text-white">Contact</span>
           </nav>
@@ -317,22 +317,6 @@ const Contact: React.FC = () => {
                 </div>
               </div>
 
-              {/* WhatsApp QR */}
-              <div className="mt-8 p-6 bg-gray-50 rounded-xl">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 text-center">Scan for WhatsApp</h3>
-                <img 
-                  src="/qr_code.png" 
-                  alt="WhatsApp QR Code" 
-                  className="w-32 h-32 mx-auto border-4 border-white rounded-xl"
-                />
-                <p className="text-center text-gray-500 text-sm mt-4">
-                  Or{' '}
-                  <a href="https://wa.me/27785786134" target="_blank" rel="noopener noreferrer" className="text-primary-500 hover:underline">
-                    click here
-                  </a>
-                  {' '}to join
-                </p>
-              </div>
             </div>
           </div>
         </div>

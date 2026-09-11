@@ -16,66 +16,85 @@ interface LanguageOption {
   welcome: string;
 }
 
+const SIMBOT_SYSTEM_PROMPT = `You are Simbot, the official intelligent assistant and receptionist of George Bakhanyiselwa Nguwe Bawo NPC (GBNB NPC) — a faith-based nonprofit in South Africa. Always refer to yourself as Simbot, never another name.
+Tone: warm, friendly, professional, encouraging — like a helpful community host. First-person ("I", "we"), conversational, South African and community-minded. Short clear paragraphs, bold for key facts, bullet lists only when steps/options are needed. Match the user's language where possible (English, isiXhosa, Afrikaans, isiZulu). End encouragingly (e.g. "Stay blessed, and let's rise together in unity through Christ.").
+Motto: "Yizani Sakhe Udonga Lwe Jerusalem" (Come, let us build the wall of Jerusalem). Vision: empower communities through fellowship, outreach programs, and digital ministry. Mission: spread faith, uplift youth, strengthen communities through spiritual growth and service.
+Services: fellowship gatherings, youth empowerment, community development, spiritual growth programs, outreach events. Programs page: Faith & Worship, Coding & Robotics, Intro to AI, Generative AI, Digital Literacy, Web Dev, Psycho-Soul Therapy, Community Development.
+Key pages: Home (/), About (/about), Programs (/programs), Gallery (/gallery + testimonials), Calendar (/calendar — Zoho monthly events preview + ZIP/PDF/JPG downloads), Get Involved (/get-involved — Volunteer form, Donation form with FNB bank details, Partnership via JotForm), Contact (/contact — contact form emails info.gbnb@gmail.com).
+Contact: phone +27 785 78 6134, email info.gbnb@gmail.com, site https://bakhanyiselwa.web.app, Facebook https://www.facebook.com/GeorgeBakhanyiselwaNguweBawo/, TikTok https://www.tiktok.com/@georgebakhanyiselwanguwe, YouTube https://www.youtube.com/@GeorgeBakhanyiselwaNguweBawo, WhatsApp https://wa.me/27785786134.
+Rules: only use these facts, never invent programs/contacts/availability. Keep answers concise and practical. Never request or discuss passwords/admin credentials. You are Simbot, an AI assistant, not human. If outside scope or sensitive, escalate via WhatsApp https://wa.me/27785786134 or email info.gbnb@gmail.com. When you don't know, be honest and direct the user to the right channel.`;
+
 const languages: LanguageOption[] = [
   {
     code: 'en',
     name: 'English',
     flag: '🇬🇧',
     instruction: '',
-    welcome: "Hello! I'm SIM-BOT, the AI assistant for George Bakhanyiselwa Nguwe Bawo NPC. Ask me anything about our programs, volunteering, donations, or how to get in touch."
+    welcome: "Hello! I'm Simbot, the GBNB NPC assistant 😊 How can I help you shine brighter today? Ask me about our programs, calendar, volunteering, donations, or how to get in touch."
   },
   {
     code: 'af',
     name: 'Afrikaans',
     flag: '🇿🇦',
     instruction: 'Please respond in Afrikaans.',
-    welcome: 'Hallo! Ek is SIM-BOT, die KI-assistent vir George Bakhanyiselwa Nguwe Bawo NPC. Vra enigiets oor ons programme, vrywilligerswerk, skenkings of kontak.'
+    welcome: 'Hallo! Ek is Simbot, die GBNB NPC-assistent 😊 Hoe kan ek jou vandag help? Vra oor ons programme, kalender, vrywilligerswerk, skenkings of kontak.'
   },
   {
     code: 'zu',
     name: 'Zulu',
     flag: '🇿🇦',
     instruction: 'Please respond in Zulu.',
-    welcome: 'Sawubona! Ngingu SIM-BOT, umsizi we-AI we George Bakhanyiselwa Nguwe Bawo NPC. Buza noma yini ngezinhlelo zethu, ukuzinikela, iminikelo noma ukuxhumana.'
+    welcome: 'Sawubona! Ngingu Simbot, umsizi we-GBNB NPC 😊 Ngingakusiza kanjani namuhla? Buza ngezinhlelo, ikhalenda, ukuzinikela, iminikelo noma ukuxhumana.'
   },
   {
     code: 'xh',
     name: 'Xhosa',
     flag: '🇿🇦',
     instruction: 'Please respond in Xhosa.',
-    welcome: 'Molo! Ndingu SIM-BOT, umncedisi we-AI we George Bakhanyiselwa Nguwe Bawo NPC. Buza nantoni na ngeenkqubo zethu, ukuzinikela, iminikelo okanye unxibelelwano.'
+    welcome: 'Molo! Ndingu Simbot, umncedisi we-GBNB NPC 😊 Ndingakunceda njani namhlanje? Buza ngeenkqubo, ikhalenda, ukuzinikela, iminikelo okanye unxibelelwano.'
   }
 ];
 
 const quickReplies = [
-  { label: 'Programs', question: 'What programs does George Bakhanyiselwa Nguwe Bawo NPC offer?' },
-  { label: 'Volunteer', question: 'How can I volunteer with you?' },
-  { label: 'Donate', question: 'How can I make a donation?' },
-  { label: 'Contact', question: 'How can I contact you?' }
+  { label: "What's happening at GBNB?", question: "What's happening at GBNB?" },
+  { label: 'Request a prayer', question: 'I would like to request a prayer.' },
+  { label: 'Support GBNB NPC', question: 'How can I support GBNB NPC?' },
+  { label: 'Calendar', question: 'Where can I find your events calendar?' },
+  { label: 'Connect With Us', question: 'How can I connect with you?' },
+  { label: 'Share a testimony', question: 'How can I share a testimony?' }
 ];
 
 const fallbackResponses: Record<string, string> = {
   programs:
-    'George Bakhanyiselwa Nguwe Bawo NPC offers: Faith & Worship Unity, Community Development, Youth Empowerment, and Digital Ministry. Would you like more detail on any of these?',
+    'We offer: **Faith & Worship, Coding & Robotics, Intro to AI, Generative AI, Digital Literacy, Web Dev, Psycho-Soul Therapy, and Community Development.** See the full list on our Programs page — which one speaks to your heart?',
   volunteer:
-    "We'd love your help! Visit our Get Involved page or email info.gbnb@gmail.com. You can also call +27 785 78 6134.",
+    "We'd love your help! Fill in the **Volunteer form on our Get Involved page**, or email **info.gbnb@gmail.com** / call **+27 785 78 6134**. Stay blessed, and let's rise together in unity through Christ.",
   donate:
-    'Thank you for considering a donation! Visit our Get Involved page to see how to support our mission. Every contribution helps our community.',
+    'Thank you for your generosity! Use the **Donation form on our Get Involved page** (FNB bank details are listed there). Every contribution uplifts our community. Stay blessed!',
   contact:
-    'Reach us at:\n📧 info.gbnb@gmail.com\n📞 +27 785 78 6134\n🌐 bakhanyiselwa.web.app',
+    'Connect with us:\n📧 info.gbnb@gmail.com\n📞 +27 785 78 6134\n💬 WhatsApp: https://wa.me/27785786134\n🌐 bakhanyiselwa.web.app',
+  calendar:
+    'Find our full calendar of services, outreaches and fellowship events on our **Calendar page (/calendar)** — preview it online and download the ZIP, PDF or JPG. Never miss a gathering!',
+  prayer:
+    'Thank you for trusting us with this. Please share your prayer request via our **Contact page** or WhatsApp **https://wa.me/27785786134**, and our fellowship will stand with you in prayer. Stay blessed.',
+  testimony:
+    'We would be honoured to hear your story! Share it via our **Contact page** or email **info.gbnb@gmail.com**, and it may encourage others in our Gallery testimonials.',
   about:
-    "George Bakhanyiselwa Nguwe Bawo NPC (GBNB) is a faith-based nonprofit. Our motto is 'Yizani Sakhe Udonga Lwe Jerusalem' (Come and Build the Wall of Jerusalem).",
+    "I'm Simbot, assistant to **George Bakhanyiselwa Nguwe Bawo NPC (GBNB)** — a faith-based nonprofit. Our motto is **'Yizani Sakhe Udonga Lwe Jerusalem'** (Come and build the wall of Jerusalem).",
   default:
-    "Thank you for your message! For specific inquiries, contact us at info.gbnb@gmail.com or call +27 785 78 6134. You can also visit our Contact page."
+    "Thank you for reaching out! I'm Simbot — I can help with programs, calendar, volunteering, donations, prayer requests and testimonies. For anything specific, email **info.gbnb@gmail.com**, WhatsApp **https://wa.me/27785786134**, or visit our Contact page. Stay blessed!"
 };
 
 function getFallbackResponse(userMessage: string): string {
   const m = userMessage.toLowerCase();
-  if (m.includes('program') || m.includes('service') || m.includes('offer')) return fallbackResponses.programs;
-  if (m.includes('volunteer') || m.includes('join') || m.includes('help')) return fallbackResponses.volunteer;
-  if (m.includes('donate') || m.includes('donation') || m.includes('give')) return fallbackResponses.donate;
-  if (m.includes('contact') || m.includes('email') || m.includes('phone') || m.includes('call')) return fallbackResponses.contact;
-  if (m.includes('about') || m.includes('who') || m.includes('gbnb')) return fallbackResponses.about;
+  if (m.includes('calendar') || m.includes('event') || m.includes('happening') || m.includes('when is')) return fallbackResponses.calendar;
+  if (m.includes('prayer') || m.includes('pray')) return fallbackResponses.prayer;
+  if (m.includes('testimony') || m.includes('testimonial') || m.includes('share')) return fallbackResponses.testimony;
+  if (m.includes('program') || m.includes('service') || m.includes('offer') || m.includes('course') || m.includes('coding') || m.includes('robotics') || m.includes('ai')) return fallbackResponses.programs;
+  if (m.includes('volunteer') || m.includes('join') || m.includes('help') || m.includes('support')) return fallbackResponses.volunteer;
+  if (m.includes('donate') || m.includes('donation') || m.includes('give') || m.includes('bank')) return fallbackResponses.donate;
+  if (m.includes('contact') || m.includes('email') || m.includes('phone') || m.includes('call') || m.includes('whatsapp') || m.includes('connect')) return fallbackResponses.contact;
+  if (m.includes('about') || m.includes('who') || m.includes('gbnb') || m.includes('motto') || m.includes('mission') || m.includes('vision')) return fallbackResponses.about;
   return fallbackResponses.default;
 }
 
@@ -121,7 +140,7 @@ const Chatbot: React.FC = () => {
     setInputValue('');
     setIsTyping(true);
 
-    const prompt = lang.instruction ? `${lang.instruction}\n${trimmed}` : trimmed;
+    const prompt = `${SIMBOT_SYSTEM_PROMPT}\n\nUser language: ${lang.name}.${lang.instruction ? ` ${lang.instruction}` : ''}\nUser message: ${trimmed}`;
     try {
       const res = await queryText(prompt);
       handleTextResponse(res);
@@ -154,9 +173,7 @@ const Chatbot: React.FC = () => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         ) : (
-          <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-          </svg>
+          <img src="/simbot_ai_icon_outline.png" alt="Open Simbot chat" className="w-9 h-9 object-contain" />
         )}
         {!isOpen && <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full animate-pulse" />}
       </button>
@@ -172,10 +189,8 @@ const Chatbot: React.FC = () => {
         <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-3 md:p-4">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
-                <svg className="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
+              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                <img src="/simbot_ai_icon.png" alt="Simbot" className="w-8 h-8 md:w-10 md:h-10 object-cover" />
               </div>
               <div>
                 <h3 className="font-semibold text-sm md:text-base">SIM-BOT</h3>
@@ -201,8 +216,8 @@ const Chatbot: React.FC = () => {
           {messages.map((message) => (
             <div key={message.id} className={`mb-3 flex ${message.isUser ? 'justify-end' : 'justify-start'}`}>
               {!message.isUser && (
-                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0">
-                  SB
+                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center mr-2 flex-shrink-0 overflow-hidden">
+                  <img src="/simbot_ai_icon.png" alt="Simbot" className="w-8 h-8 object-cover" />
                 </div>
               )}
               <div
@@ -217,7 +232,7 @@ const Chatbot: React.FC = () => {
 
           {isTyping && (
             <div className="mb-3 flex justify-start">
-              <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold mr-2">SB</div>
+              <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center mr-2 overflow-hidden"><img src="/simbot_ai_icon.png" alt="Simbot typing" className="w-8 h-8 object-cover" /></div>
               <div className="bg-white text-gray-800 px-4 py-3 rounded-2xl rounded-bl-sm shadow-sm border border-gray-100">
                 <div className="flex gap-1">
                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />

@@ -88,7 +88,7 @@ const About: React.FC = () => {
         </div>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <nav className="flex items-center gap-2 text-white/60 text-sm mb-6">
-            <Link to="/" className="hover:text-white transition-colors">Home</Link>
+            <Link to="/" className="text-white hover:text-white transition-colors">Home</Link>
             <span>/</span>
             <span className="text-white">About Us</span>
           </nav>

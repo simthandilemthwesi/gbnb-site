@@ -69,6 +69,13 @@ const Home: React.FC = () => {
 
   const defaultAnnouncements = [
     {
+      title: "Never Miss a Gathering — Explore Our Events Calendar",
+      content: 'Find our full calendar of services, outreaches and fellowship events — plan your year with us in faith and unity.',
+      date: '2026',
+      link: '/calendar',
+      linkLabel: 'View Calendar'
+    },
+    {
       title: '3rd Year Anniversary Celebration',
       content: 'Bakhanyiselwa celebrates its third anniversary in February 2026 — three years of faith, fellowship, and community service.',
       date: 'February 2026'
@@ -394,6 +401,14 @@ const Home: React.FC = () => {
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">{item.title}</h3>
                   <p className="text-gray-600 text-sm mb-3">{item.content}</p>
+                  {item.link && (
+                    <Link to={item.link} className="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 hover:text-blue-700 mb-3">
+                      {item.linkLabel || 'Learn more'}
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </Link>
+                  )}
                   <p className="text-gray-400 text-sm">{item.date || new Date().getFullYear()}</p>
                 </div>
               ))}

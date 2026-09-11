@@ -28,7 +28,7 @@ const Calendar: React.FC = () => {
         </div>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <nav className="flex items-center gap-2 text-white/60 text-sm mb-6">
-            <a href="/" className="hover:text-white transition-colors">Home</a>
+            <a href="/" className="text-white hover:text-white transition-colors">Home</a>
             <span>/</span>
             <span className="text-white">Calendar</span>
           </nav>
