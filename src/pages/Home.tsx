@@ -255,7 +255,7 @@ const Home: React.FC = () => {
             </video>
             
             OR for GIF:
-            <img src="/hero-animation.gif" alt="Animation" className="w-full h-full object-contain" />
+            <img src="/hero-animation.gif" alt="Animated faith celebration for George Bakhanyiselwa Nguwe Bawo NPC" className="w-full h-full object-contain" />
             */}
           </div>
           
@@ -270,7 +270,7 @@ const Home: React.FC = () => {
           </div>
           
           {/* Main Heading */}
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-2 tracking-tight drop-shadow-lg">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-2 tracking-tight drop-shadow-lg text-balance break-words">
             George Bakhanyiselwa
           </h1>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
