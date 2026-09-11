@@ -194,7 +194,7 @@ const Chatbot: React.FC = () => {
                 <img src="/simbot_ai_icon.png" alt="Simbot" className="w-8 h-8 md:w-10 md:h-10 object-cover" />
               </div>
               <div>
-                <h3 className="font-semibold text-sm md:text-base">SIM-BOT</h3>
+                <h3 className="font-semibold text-sm md:text-base text-white">SIM-BOT</h3>
                 <p className="text-xs text-white/80">AI Assistant</p>
               </div>
             </div>
