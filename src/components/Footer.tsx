@@ -100,14 +100,14 @@ const Footer: React.FC = () => {
               </li>
               <li className="flex items-center gap-3">
                 <span className="text-accent-200 text-sm mr-1">Follow us</span>
-                <a href="https://www.facebook.com/GeorgeBakhanyiselwaNguweBawo/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
-                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.5 9.9v-7H8v-3h2.5V9.5A3.5 3.5 0 0114 5.7h2v2.6h-1.2c-.7 0-1.3.5-1.3 1.2V12H16l-.5 3h-2v7A10 10 0 0022 12z"/></svg>
+                <a href="https://www.facebook.com/GeorgeBakhanyiselwaNguweBawo/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors">
+                  <svg className="w-4 h-4 fill-current text-white" viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.5 9.9v-7H8v-3h2.5V9.5A3.5 3.5 0 0114 5.7h2v2.6h-1.2c-.7 0-1.3.5-1.3 1.2V12H16l-.5 3h-2v7A10 10 0 0022 12z"/></svg>
                 </a>
-                <a href="https://www.tiktok.com/@georgebakhanyiselwanguwe" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
-                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M21 8.5a6.5 6.5 0 01-3.6-1.1v6.9a5.2 5.2 0 11-4.4-5.1v2.2a3 3 0 102.6 3V2h2.2a6.5 6.5 0 003.2 3v3.5z"/></svg>
+                <a href="https://www.tiktok.com/@georgebakhanyiselwanguwe" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors">
+                  <svg className="w-4 h-4 fill-current text-white" viewBox="0 0 24 24"><path d="M21 8.5a6.5 6.5 0 01-3.6-1.1v6.9a5.2 5.2 0 11-4.4-5.1v2.2a3 3 0 102.6 3V2h2.2a6.5 6.5 0 003.2 3v3.5z"/></svg>
                 </a>
-                <a href="https://www.youtube.com/@GeorgeBakhanyiselwaNguweBawo" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
-                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M23 12s0-3.3-.4-4.9a2 2 0 00-1.4-1.4C19.6 5.3 12 5.3 12 5.3s-7.6 0-9.2.4A2 2 0 001.4 7.1C1 8.7 1 12 1 12s0 3.3.4 4.9a2 2 0 001.4 1.4c1.6.4 9.2.4 9.2.4s7.6 0 9.2-.4a2 2 0 001.4-1.4c.4-1.6.4-4.9.4-4.9zM10 15.5v-7l6 3.5-6 3.5z"/></svg>
+                <a href="https://www.youtube.com/@GeorgeBakhanyiselwaNguweBawo" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors">
+                  <svg className="w-4 h-4 fill-current text-white" viewBox="0 0 24 24"><path d="M23 12s0-3.3-.4-4.9a2 2 0 00-1.4-1.4C19.6 5.3 12 5.3 12 5.3s-7.6 0-9.2.4A2 2 0 001.4 7.1C1 8.7 1 12 1 12s0 3.3.4 4.9a2 2 0 001.4 1.4c1.6.4 9.2.4 9.2.4s7.6 0 9.2-.4a2 2 0 001.4-1.4c.4-1.6.4-4.9.4-4.9zM10 15.5v-7l6 3.5-6 3.5z"/></svg>
                 </a>
               </li>
             </ul>

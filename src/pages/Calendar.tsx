@@ -40,19 +40,19 @@ const Calendar: React.FC = () => {
       <section className="bg-gray-50 py-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          {/* Embedded Calendar Preview */}
+          {/* Embedded Calendar Preview — responsive on all screens */}
           <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100 mb-10">
-            <iframe
-              src="https://workdrive.zohoexternal.com/embed/a9gtjded82dc1ef8e473bb58c0c33b957aded?hidetheme=true&toolbar=true&layout=grid&appearance=light&themecolor=blue"
-              scrolling="no"
-              frameBorder="0"
-              allowFullScreen
-              width="100%"
-              height="600"
-              title="GBNB Calendar"
-              className="w-full"
-              style={{ minHeight: 600 }}
-            />
+            <div className="relative w-full overflow-hidden" style={{ height: 'clamp(480px, 78vh, 880px)' }}>
+              <iframe
+                src="https://workdrive.zohoexternal.com/embed/a9gtjded82dc1ef8e473bb58c0c33b957aded?hidetheme=true&toolbar=true&layout=grid&appearance=light&themecolor=blue"
+                scrolling="no"
+                frameBorder="0"
+                allowFullScreen
+                title="GBNB Calendar"
+                className="absolute inset-0 w-full h-full"
+                style={{ minWidth: '100%', minHeight: '100%', border: 0 }}
+              />
+            </div>
           </div>
 
           {/* Download Instructions */}

@@ -164,8 +164,9 @@ const Chatbot: React.FC = () => {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 ${
-          isOpen ? 'bg-gray-700 rotate-90' : 'bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600'
+          isOpen ? 'bg-gray-700 rotate-90' : 'hover:brightness-110'
         }`}
+        style={isOpen ? undefined : { backgroundColor: '#1800ad' }}
         aria-label="Chat with SIM-BOT"
       >
         {isOpen ? (
@@ -186,7 +187,7 @@ const Chatbot: React.FC = () => {
         style={{ maxHeight: '85vh' }}
       >
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-3 md:p-4">
+        <div className="text-white p-3 md:p-4" style={{ backgroundColor: '#1800ad' }}>
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0 overflow-hidden">
@@ -194,7 +195,7 @@ const Chatbot: React.FC = () => {
               </div>
               <div>
                 <h3 className="font-semibold text-sm md:text-base">SIM-BOT</h3>
-                <p className="text-xs text-blue-100">AI Assistant</p>
+                <p className="text-xs text-white/80">AI Assistant</p>
               </div>
             </div>
             <select
@@ -216,14 +217,15 @@ const Chatbot: React.FC = () => {
           {messages.map((message) => (
             <div key={message.id} className={`mb-3 flex ${message.isUser ? 'justify-end' : 'justify-start'}`}>
               {!message.isUser && (
-                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center mr-2 flex-shrink-0 overflow-hidden">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center mr-2 flex-shrink-0 overflow-hidden" style={{ backgroundColor: '#1800ad' }}>
                   <img src="/simbot_ai_icon.png" alt="Simbot" className="w-8 h-8 object-cover" />
                 </div>
               )}
               <div
                 className={`max-w-[75%] px-4 py-2 rounded-2xl ${
-                  message.isUser ? 'bg-blue-600 text-white rounded-br-sm' : 'bg-white text-gray-800 rounded-bl-sm shadow-sm border border-gray-100'
+                  message.isUser ? 'text-white rounded-br-sm' : 'bg-white text-gray-800 rounded-bl-sm shadow-sm border border-gray-100'
                 }`}
+                style={message.isUser ? { backgroundColor: '#1800ad' } : undefined}
               >
                 {message.text && <p className="text-sm whitespace-pre-line">{message.text}</p>}
               </div>
@@ -232,7 +234,7 @@ const Chatbot: React.FC = () => {
 
           {isTyping && (
             <div className="mb-3 flex justify-start">
-              <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center mr-2 overflow-hidden"><img src="/simbot_ai_icon.png" alt="Simbot typing" className="w-8 h-8 object-cover" /></div>
+              <div className="w-8 h-8 rounded-full flex items-center justify-center mr-2 overflow-hidden" style={{ backgroundColor: '#1800ad' }}><img src="/simbot_ai_icon.png" alt="Simbot typing" className="w-8 h-8 object-cover" /></div>
               <div className="bg-white text-gray-800 px-4 py-3 rounded-2xl rounded-bl-sm shadow-sm border border-gray-100">
                 <div className="flex gap-1">
                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
@@ -276,7 +278,8 @@ const Chatbot: React.FC = () => {
             <button
               onClick={() => sendText(inputValue)}
               disabled={!inputValue.trim() || isTyping}
-              className="w-10 h-10 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 rounded-full flex items-center justify-center text-white transition-colors"
+              className="w-10 h-10 disabled:bg-gray-300 rounded-full flex items-center justify-center text-white transition-colors hover:brightness-110"
+              style={{ backgroundColor: '#1800ad' }}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
