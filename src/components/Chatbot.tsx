@@ -113,7 +113,7 @@ function getFallbackResponse(userMessage: string): string {
   return fallbackResponses.default;
 }
 
-const LINK_RE = /((?:https?:\/\/|www\.)[^\s()]+|[\w.+-]+@[\w-]+\.[\w.]+|\+\d[\d\s.\-]*\d|\/(?:calendar|contact|get-involved|programs|gallery|about|thank-you)(?:[^\s]*)?)/g;
+const LINK_RE = /((?:https?:\/\/|www\.)[^\s()]+|[\w.+-]+@[\w-]+\.[\w.]+|\+\d[\d\s.-]*\d|\/(?:calendar|contact|get-involved|programs|gallery|about|thank-you)(?:[^\s]*)?)/g;
 
 const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -196,8 +196,8 @@ const Chatbot: React.FC = () => {
           </span>
         );
       }
-      if (/^\+\d[\d\s.\-]*\d$/.test(core)) {
-        const tel = core.replace(/[\s.\-]/g, '');
+      if (/^\+\d[\d\s.-]*\d$/.test(core)) {
+        const tel = core.replace(/[\s.-]/g, '');
         return (
           <span key={key}>
             <a href={`tel:${tel}`} className="font-medium text-blue-700 underline whitespace-nowrap">{core}</a>
