@@ -50,15 +50,15 @@ const Navbar: React.FC = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="flex items-center justify-between gap-2 h-16 md:h-20">
           <Link 
             to="/" 
-            className="flex items-center gap-3 group"
+            className="flex items-center gap-3 group min-w-0"
           >
             <img
               src="/bakhanyiselwa_logo.png"
               alt="George Bakhanyiselwa Nguwe Bawo NPC"
-              className="h-14 md:h-16 w-auto transition-transform duration-300 group-hover:scale-105"
+              className="h-11 sm:h-14 md:h-16 w-auto max-w-[46vw] object-contain transition-transform duration-300 group-hover:scale-105"
             />
           </Link>
 
@@ -115,7 +115,7 @@ const Navbar: React.FC = () => {
             </div>
           </div>
 
-          <div className="lg:hidden flex items-center gap-2">
+          <div className="lg:hidden flex items-center gap-2 flex-shrink-0">
             <GoogleTranslate />
             <button
               className={`p-2 rounded-lg transition-colors duration-300 ${
@@ -154,7 +154,7 @@ const Navbar: React.FC = () => {
          </div>
 
         {isOpen && (
-          <div className="lg:hidden pb-4 bg-white/95 backdrop-blur-md rounded-2xl shadow-lg -mx-4 px-4 mt-2">
+          <div className="lg:hidden pb-4 bg-white/95 backdrop-blur-md rounded-2xl shadow-lg px-4 mt-2">
             <div className="flex flex-col gap-1">
               {navLinks.map((link) => (
                 <Link

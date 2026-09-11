@@ -1,366 +1,92 @@
-# George Bakhanyiselwa Nguwe Bawo NPC Website
+# George Bakhanyiselwa Nguwe Bawo NPC (GBNB) — Website
 
-A production-ready, professional, responsive, faith-based nonprofit website built with React, TypeScript, Firebase, and TailwindCSS.
+Live site: **https://bakhanyiselwa.web.app**
+Motto: *"Yizani Sakhe Udonga Lwe Jerusalem"* — Guided by Faith, United in Purpose.
 
-## 🎯 Project Overview
+Faith-based nonprofit website built with **React 18 + TypeScript + TailwindCSS + Firebase** (Firestore, Auth, Storage, Hosting). Firebase plan: **Spark (free)** — hosting + forms work fully; Cloud Functions outbound calls (AI) require Blaze.
 
-**Domain**: https://bakhanyiselwa.web.app
+## Pages & Routes
 
-This website showcases the GBNB NPC organization, providing information about their faith-based programs, community initiatives, and ways to get involved.
+| Route | Page | Notes |
+|---|---|---|
+| `/` | Home | Hero, stats (Years of Service auto = `currentYear − 2023`), announcements incl. calendar card linking to `/calendar`, programs preview, testimonials preview |
+| `/about` | About Us | Mission, vision, timeline |
+| `/programs` | Programs | Faith & Worship, Coding & Robotics, Intro to AI, Generative AI, Digital Literacy, Web Dev, Psycho-Soul Therapy, Community Development + impact stats |
+| `/gallery` | Gallery | Category filter, photo submission form, testimonials section (`/gallery#testimonials`) |
+| `/calendar` | Calendar | Zoho WorkDrive monthly preview (fully responsive `clamp(480px, 78vh, 880px)`), Option 1 ZIP + Option 2 single-file download instructions |
+| `/get-involved` | Get Involved | Volunteer form, Donation form (FNB bank details), Partnership via JotForm |
+| `/contact` | Contact | Contact form, contact cards, map, social links |
+| `/thank-you` | Thank You | Post-submit landing, auto-redirects home after 5s |
+| `/admin` | Admin dashboard | Protected, role-based (admin/editor) |
 
-## ✨ Features
+## Forms (validate → Firestore → email → redirect)
 
-### Public Pages
-- **Home** - Hero banner with animated elements, dynamic announcements, impact statistics
-- **About Us** - Mission & vision, organizational timeline (2023-2026), leadership profiles
-- **Programs** - 5 core programs with expandable details and icons
-- **Gallery** - Responsive image grid with category filtering
-- **Get Involved** - Volunteer sign-up, donation system, partnership inquiries
-- **Contact** - Contact form, organization details, Google Maps, QR code display
+All forms validate required fields, save to Firestore, email **info.gbnb@gmail.com** via **Web3Forms** (browser POST — Spark-safe), show a success alert, then redirect to `/thank-you`.
 
-### Admin Dashboard (Protected)
-- Firebase Authentication (Google + Email/Password)
-- Role-based access control (Admin, Editor)
-- Manage volunteers, contacts, announcements
-- Media upload to Firebase Storage
-- Real-time data management
+| Form | Firestore collection | Web3Forms env key |
+|---|---|---|
+| Volunteer | `volunteers` | `REACT_APP_WEB3FORMS_VOLUNTEER_KEY` |
+| Donation | `donations` | `REACT_APP_WEB3FORMS_DONATION_KEY` |
+| Contact | `contact_submissions` | `REACT_APP_WEB3FORMS_CONTACT_KEY` |
+| Photo Submission | `photo_submissions` (+ Storage image) | `REACT_APP_WEB3FORMS_PHOTO_KEY` |
 
-## 🛠 Tech Stack
+Keys live in `.env` (gitignored, values documented in `.env.example`); `emailService.ts` falls back to built-in keys per form. Set each form's recipient + redirect (`https://bakhanyiselwa.web.app/thank-you`) + design in the Web3Forms dashboard.
 
-- **Frontend**: React 18.2 + TypeScript
-- **Styling**: TailwindCSS 3.3 + Custom CSS
-- **Routing**: React Router DOM v6
-- **Backend**: Firebase (Firestore, Functions, Storage, Auth)
-- **Hosting**: Firebase Hosting
-- **SEO**: React Helmet
-- **Icons**: Custom SVG + Lucide React (optional)
+## Simbot — AI Chat Assistant
 
-## 📁 Project Structure
+Floating widget (`src/components/Chatbot.tsx`), brand color **#1800ad**, custom icons (`public/simbot_ai_icon_outline.png`, `public/simbot_ai_icon.png`).
+Text-only customer-agent bot grounded in a site system prompt (motto, programs, calendar, contacts, WhatsApp escalation). Live replies via `assistantProxy` Cloud Function → Hugging Face; rule-based fallbacks answer offline.
+**Spark note:** functions can't reach Hugging Face on Spark (outbound limited to Google) — fallbacks reply until you upgrade to Blaze + set `firebase functions:config:set huggingface.key`.
+
+## Header / Footer / SEO
+
+- **Translate button in navbar** (free Google Translate widget, Spark-safe): EN + 9 SA languages (af, zu, xh, st, tn, nso, ve, ts, ss) + fr/pt/es. Icon-only on very small screens.
+- **Footer:** `© 2023–{auto year}` + live **CAT** clock (`Africa/Johannesburg`), social icons (Facebook, TikTok, YouTube), map, quick links.
+- **SEO:** React Helmet per page, canonical + hreflang (en/xh/zu/af/x-default), Open Graph + Twitter cards, JSON-LD (NonProfit, Organization, FAQ, WebSite, Breadcrumb, Event on Calendar), `robots.txt` + `sitemap.xml` (incl. `/calendar`), GA + GTM.
+
+## Project Structure
 
 ```
-gbnb-site/
-├── public/                     # Static assets
-│   ├── bakhanyiselwa_logo.png
-│   ├── bakhanyiselwa_icon.png
-│   ├── qr_code.png
-│   └── index.html
-├── src/
-│   ├── components/            # Reusable components
-│   │   ├── Navbar.tsx
-│   │   ├── Footer.tsx
-│   │   ├── HeroBanner.tsx
-│   │   ├── GalleryCarousel.tsx
-│   │   ├── ContactForm.tsx
-│   │   └── QRCodeDisplay.tsx
-│   ├── pages/                 # Page components
-│   │   ├── Home.tsx
-│   │   ├── About.tsx
-│   │   ├── Programs.tsx
-│   │   ├── Gallery.tsx
-│   │   ├── GetInvolved.tsx
-│   │   ├── Contact.tsx
-│   │   └── AdminDashboard.tsx
-│   ├── contexts/              # React contexts
-│   │   ├── AuthContext.tsx
-│   │   └── NotificationContext.tsx
-│   ├── services/             # Firebase services
-│   │   ├── firebase.ts
-│   │   ├── database.ts
-│   │   └── storage.ts
-│   ├── types/                # TypeScript types
-│   │   └── index.ts
-│   ├── App.tsx               # Main app component
-│   ├── index.tsx             # Entry point
-│   └── index.css             # Global styles
-├── functions/                 # Firebase Cloud Functions
-│   ├── index.ts
-│   ├── package.json
-│   └── tsconfig.json
-├── firestore.rules            # Firestore security rules
-├── storage.rules              # Storage security rules
-├── firebase.json              # Firebase configuration
-├── tailwind.config.js        # TailwindCSS configuration
-├── postcss.config.js         # PostCSS configuration
-└── package.json
+src/
+  components/  Navbar, Footer, Chatbot, GoogleTranslate, Captcha, AdminProtectedRoute, ...
+  pages/       Home, About, Programs, Gallery, Calendar, GetInvolved, Contact, ThankYou, Admin, FirebaseSetup
+  services/    firebase, assistantService (emulator auto on localhost), emailService (Web3Forms), database
+  contexts/    AuthContext (info.gbnb@gmail.com = auto-admin)
+  data/        testimonials
+functions/     assistantProxy callable + triggers (needs Blaze to deploy/call HF)
+public/        index.html (SEO), robots.txt, sitemap.xml, logos, simbot icons
 ```
 
-## 🚀 Getting Started
+## Run Locally
 
-### Prerequisites
-
-- Node.js 18+ and npm
-- Firebase CLI: `npm install -g firebase-tools`
-- Firebase project with enabled services:
-  - Firestore
-  - Authentication (Google + Email/Password)
-  - Storage
-  - Functions
-
-### Installation
-
-1. **Clone the repository**
-```bash
-git clone <repository-url>
-cd gbnb-site
-```
-
-2. **Install dependencies**
 ```bash
 npm install
+npm start            # http://localhost:3000
+npm run dev          # app + functions emulator (needs firebase-tools)
 ```
 
-3. **Create environment file**
-```bash
-cp .env.example .env
-```
+Admin test: open `/admin`, sign in with `info.gbnb@gmail.com` (self-assigns admin on first login); others get `editor`. Promote via `users` collection `role: 'admin'`. Add `localhost` to Firebase Auth authorized domains if login fails. Localhost uses production Firestore, so test submissions are real — use test data.
 
-4. **Update Firebase configuration**
-
-Edit `.env` with your Firebase credentials:
-```env
-REACT_APP_FIREBASE_API_KEY=your_api_key
-REACT_APP_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
-REACT_APP_FIREBASE_PROJECT_ID=your_project_id
-REACT_APP_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
-REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-REACT_APP_FIREBASE_APP_ID=your_app_id
-```
-
-### Development
+## Deploy (Spark — hosting only)
 
 ```bash
-# Start development server
-npm start
-
-# Run tests (if configured)
-npm test
-
-# Build for production
-npm run build
+GENERATE_SOURCEMAP=false npm run build
+firebase deploy --project bakhanyiselwa --only hosting
 ```
 
-The app runs at `http://localhost:3000`
-
-## 🔥 Firebase Setup
-
-### 1. Initialize Firebase
-
+Functions (Blaze only):
 ```bash
-firebase login
-firebase init
+firebase functions:config:set huggingface.key="hf_NEW_ROTATED_TOKEN"
+firebase deploy --project bakhanyiselwa --only functions
 ```
 
-Select:
-- Hosting (configure existing directory)
-- Functions (TypeScript)
-- Firestore (start in production mode)
-- Storage
+## Contact
 
-### 2. Configure Firestore Rules
-
-Edit `firestore.rules`:
-```javascript
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /{document=**} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-  }
-}
-```
-
-### 3. Configure Storage Rules
-
-Edit `storage.rules`:
-```javascript
-rules_version = '2';
-service firebase.storage {
-  match /b/{bucket}/o {
-    match /{allPaths=**} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-  }
-}
-```
-
-### 4. Enable Authentication
-
-In Firebase Console:
-1. Go to Authentication > Sign-in method
-2. Enable Google
-3. Enable Email/Password
-
-### 5. Create Admin User
-
-```bash
-firebase functions:shell
-```
-
-Or add admin manually in Firestore:
-```javascript
-// Collection: users
-{
-  uid: "user_uid",
-  email: "admin@email.com",
-  displayName: "Admin Name",
-  role: "admin",
-  createdAt: timestamp
-}
-```
-
-## 📊 Database Collections
-
-### Firestore Collections
-
-- `volunteers` - Volunteer applications
-- `contacts` - Contact form submissions  
-- `contact_submissions` - Legacy contact submissions
-- `donations` - Donation records
-- `partnerships` - Partnership inquiries
-- `announcements` - Homepage announcements
-- `gallery` - Gallery media items
-- `programs` - Program descriptions
-- `users` - User profiles & roles
-
-### Sample Data
-
-Create sample programs in Firestore:
-
-```javascript
-// Collection: programs
-{
-  id: "1",
-  title: "Faith & Worship Unity",
-  description: "Building spiritual foundations...",
-  icon: "🙏",
-  details: "Weekly worship services...",
-  order: 1,
-  createdAt: timestamp,
-  updatedAt: timestamp
-}
-```
-
-## 🎨 Design System
-
-### Colors
-
-```css
-Primary Blue: #0B3D91
-Primary Blue Light: #2c5282  
-Primary Blue Dark: #0a2d6b
-Secondary Blue: #3182ce
-Accent Silver: #C0C0C0
-Accent Gold: #d4af37
-```
-
-### Typography
-
-- **Headings**: Playfair Display (serif)
-- **Body**: Inter (sans-serif)
-
-## 🔐 Security Features
-
-- Firebase Authentication with Google & Email
-- Role-based access control (admin, editor)
-- Protected admin routes
-- Input validation on all forms
-- Firestore security rules
-- Storage security rules
-
-## 🌐 Deployment
-
-### Deploy to Firebase
-
-```bash
-# Build the app
-npm run build
-
-# Deploy everything
-firebase deploy
-
-# Deploy only hosting
-firebase deploy --only hosting
-
-# Deploy functions only
-firebase deploy --only functions
-```
-
-### Custom Domain (Optional)
-
-1. In Firebase Console > Hosting
-2. Add custom domain
-3. Follow DNS verification steps
-4. Enable HTTPS
-
-## 📱 Responsive Design
-
-The website is fully responsive with breakpoints:
-- Mobile: < 640px
-- Tablet: 640px - 1024px
-- Desktop: > 1024px
-
-## 🔍 SEO Optimization
-
-- React Helmet for meta tags
-- Open Graph tags for social sharing
-- Semantic HTML structure
-- Image alt text
-- Fast load times
-- Mobile-first design
-
-## 📊 Analytics
-
-Integrate Firebase Analytics:
-```javascript
-import { analytics } from 'firebase/analytics';
-
-// Track events
-analytics().logEvent('page_view', {
-  page_location: window.location.href,
-  page_title: document.title
-});
-```
-
-## 🧪 Testing
-
-```bash
-# Run unit tests
-npm test
-
-# Run tests in watch mode
-npm test -- --watch
-
-# Generate coverage report
-npm test -- --coverage
-```
-
-## 📝 License
-
-Private - George Bakhanyiselwa Nguwe Bawo NPC
-
-## 📞 Contact
-
-- **Phone**: +27 785 78 6134
-- **Email**: info.gbnb@gmail.com
-- **Website**: https://bakhanyiselwa.web.app
-- **Facebook**: https://facebook.com/bakhanyiselwa
-- **TikTok**: https://tiktok.com/@bakhanyiselwa
-- **YouTube**: https://youtube.com/@bakhanyiselwa
-- **WhatsApp**: https://wa.me/27785786134
-
-## 🙏 Acknowledgments
-
-- Firebase for providing excellent backend services
-- React team for the amazing framework
-- TailwindCSS for utility-first styling
-- All contributors and supporters of GBNB NPC
+- Phone/WhatsApp: +27 785 78 6134 / https://wa.me/27785786134
+- Email: info.gbnb@gmail.com
+- Facebook: https://www.facebook.com/GeorgeBakhanyiselwaNguweBawo/
+- TikTok: https://www.tiktok.com/@georgebakhanyiselwanguwe
+- YouTube: https://www.youtube.com/@GeorgeBakhanyiselwaNguweBawo
 
 ---
-
-**Built with ❤️ by Simthandile Mthwesi**
-=======
-# gbnb-site
-"Yizani Sakhe Udonga Lwe Jerusalem"  Guided by Faith, United in Purpose
+Built with ❤️ by Simthandile Mthwesi — "Yizani Sakhe Udonga Lwe Jerusalem"

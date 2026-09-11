@@ -60,15 +60,18 @@ const GoogleTranslate: React.FC = () => {
     <div className="relative">
       <button
         onClick={() => setOpen(v => !v)}
-        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-medium transition-colors bg-white/10 border-white/20 text-white hover:bg-white/20 lg:bg-gray-100 lg:text-gray-700 lg:border-gray-200 lg:hover:bg-gray-200"
+        className="inline-flex items-center gap-1.5 px-2.5 min-[420px]:px-3 py-1.5 rounded-full border text-xs font-medium transition-colors bg-white/10 border-white/20 text-white hover:bg-white/20 lg:bg-gray-100 lg:text-gray-700 lg:border-gray-200 lg:hover:bg-gray-200 flex-shrink-0"
         aria-haspopup="listbox"
         aria-expanded={open}
       >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18zM3 9h18M3 15h18M9 3a15 15 0 000 18M15 3a15 15 0 000 18" />
+        <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#4285F4" d="M23.5 12.3c0-.9-.1-1.5-.3-2.2H12v4.1h6.5c-.1 1.1-.8 2.7-2.4 3.8v.1l3.5 2.7h.1c2.2-2 3.8-5.1 3.8-8.5z" />
+          <path fill="#34A853" d="M12 24c3.2 0 5.9-1.1 7.9-2.9l-3.8-2.9c-1 .7-2.4 1.2-4.1 1.2-3.1 0-5.8-2.1-6.8-5h-.1l-3.6 2.8v.1c1.9 3.9 5.9 6.7 10.5 6.7z" />
+          <path fill="#FBBC05" d="M5.2 14.4c-.2-.7-.4-1.5-.4-2.4s.1-1.7.4-2.4v-.1L1.6 6.7l-.1.1C.5 8.7 0 10.2 0 12s.5 3.3 1.4 4.7l3.8-2.3z" />
+          <path fill="#EA4335" d="M12 4.7c1.8 0 3 .8 3.7 1.4l3.3-3.2C17.9 1.1 15.2 0 12 0 7.5 0 3.5 2.7 1.4 6.8l3.8 2.9c1-2.9 3.7-5 6.8-5z" />
         </svg>
-        Translate
-        <svg className="w-3 h-3 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+        <span className="hidden min-[420px]:inline">Translate</span>
+        <svg className="w-3 h-3 opacity-70 hidden min-[420px]:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
       </button>
       {open && (
         <div className="absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-lg border border-gray-100 py-1 z-50 max-h-72 overflow-auto">
