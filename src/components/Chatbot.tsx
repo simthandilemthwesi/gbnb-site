@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { queryText, AssistantResponse } from '../services/assistantService';
 
 interface Message {
@@ -98,6 +99,8 @@ function getFallbackResponse(userMessage: string): string {
   return fallbackResponses.default;
 }
 
+const LINK_RE = /((?:https?:\/\/|www\.)[^\s()]+|[\w.+-]+@[\w-]+\.[\w.]+|\/(?:calendar|contact|get-involved|programs|gallery|about|thank-you)(?:[^\s]*)?)/g;
+
 const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLang, setSelectedLang] = useState('en');
@@ -156,6 +159,55 @@ const Chatbot: React.FC = () => {
       e.preventDefault();
       sendText(inputValue);
     }
+  };
+
+  const linkify = (text: string, keyPrefix: string): React.ReactNode[] => {
+    return text.split(LINK_RE).map((part, i) => {
+      const key = `${keyPrefix}-${i}`;
+      let core = part;
+      let trail = '';
+      if (/^(https?:\/\/|www\.|[\w.+-]+@)/.test(part)) {
+        const m = part.match(/[.,;:!?)]+$/);
+        if (m) {
+          core = part.slice(0, -m[0].length);
+          trail = m[0];
+        }
+      }
+      if (/^(https?:\/\/|www\.)/.test(core) && core.length > 4) {
+        const href = core.startsWith('http') ? core : `https://${core}`;
+        return (
+          <span key={key}>
+            <a href={href} target="_blank" rel="noopener noreferrer" className="font-medium text-blue-700 underline break-all">{core}</a>
+            {trail}
+          </span>
+        );
+      }
+      if (/^[\w.+-]+@[\w-]+\.[\w.]+$/.test(core)) {
+        return (
+          <span key={key}>
+            <a href={`mailto:${core}`} className="font-medium text-blue-700 underline break-all">{core}</a>
+            {trail}
+          </span>
+        );
+      }
+      if (core.startsWith('/')) {
+        return (
+          <span key={key}>
+            <Link to={core} onClick={() => setIsOpen(false)} className="font-semibold text-blue-700 underline">{core}</Link>
+          </span>
+        );
+      }
+      return <span key={key}>{part}</span>;
+    });
+  };
+
+  const renderBotText = (text: string): React.ReactNode => {
+    return text.split(/(\*\*[^*]+\*\*)/g).map((chunk, ci) => {
+      if (/^\*\*[^*]+\*\*$/.test(chunk)) {
+        return <strong key={ci}>{linkify(chunk.slice(2, -2), `b${ci}`)}</strong>;
+      }
+      return <span key={ci}>{linkify(chunk, `t${ci}`)}</span>;
+    });
   };
 
   return (
@@ -227,7 +279,11 @@ const Chatbot: React.FC = () => {
                 }`}
                 style={message.isUser ? { backgroundColor: '#1800ad' } : undefined}
               >
-                {message.text && <p className="text-sm whitespace-pre-line">{message.text}</p>}
+                {message.text && (
+                  <p className="text-sm whitespace-pre-line">
+                    {message.isUser ? message.text : renderBotText(message.text)}
+                  </p>
+                )}
               </div>
             </div>
           ))}
