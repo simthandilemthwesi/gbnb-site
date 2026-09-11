@@ -68,9 +68,9 @@ const Calendar: React.FC = () => {
                 <li>Right‑click and select <strong className="text-gray-900">Extract All</strong>.</li>
                 <li>Open the extracted folder named <strong className="text-gray-900">George Bakhanyiselwa Nguwe Bawo Calendar</strong>.</li>
                 <li>Inside, you will find:
-                  <ul className="list-disc ml-6 mt-2 space-y-1">
-                    <li><code className="bg-gray-100 px-2 py-0.5 rounded text-sm">Bakhanyiselwa_Nguwe_bawo_Calendar.jpg</code></li>
-                    <li><code className="bg-gray-100 px-2 py-0.5 rounded text-sm">Bakhanyiselwa_Nguwe_bawo_Calendar.pdf</code></li>
+                  <ul className="list-disc ml-4 sm:ml-6 mt-2 space-y-1">
+                    <li><code className="bg-gray-100 px-2 py-0.5 rounded text-[11px] sm:text-sm break-all">Bakhanyiselwa_Nguwe_bawo_Calendar.jpg</code></li>
+                    <li><code className="bg-gray-100 px-2 py-0.5 rounded text-[11px] sm:text-sm break-all">Bakhanyiselwa_Nguwe_bawo_Calendar.pdf</code></li>
                   </ul>
                 </li>
               </ol>
