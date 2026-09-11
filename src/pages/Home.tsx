@@ -90,8 +90,9 @@ const Home: React.FC = () => {
     }
   ];
 
+  const yearsOfService = new Date().getFullYear() - 2023;
   const stats = [
-    { number: '3+', label: 'Years of Service' },
+    { number: `${yearsOfService}+`, label: 'Years of Service' },
     { number: '400+', label: 'Volunteers & Memberships' },
     { number: '1000+', label: 'Lives Impacted' },
     { number: '8', label: 'Core Programs' }

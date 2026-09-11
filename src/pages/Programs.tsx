@@ -152,7 +152,7 @@ const Programs: React.FC = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { number: '3+', label: 'Years of Service' },
+              { number: `${new Date().getFullYear() - 2023}+`, label: 'Years of Service' },
               { number: '400+', label: 'Volunteers & Memberships' },
               { number: '1000+', label: 'Lives Impacted' },
               { number: '8', label: 'Core Programs' }
