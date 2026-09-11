@@ -191,7 +191,7 @@ const Chatbot: React.FC = () => {
         const href = core.startsWith('http') ? core : `https://${core}`;
         return (
           <span key={key}>
-            <a href={href} target="_blank" rel="noopener noreferrer" className="font-medium text-blue-700 underline break-all">{core}</a>
+            <a href={href} target="_blank" rel="noopener noreferrer" className="font-medium text-gray-800 underline break-all">{core}</a>
             {trail}
           </span>
         );
@@ -200,7 +200,7 @@ const Chatbot: React.FC = () => {
         const tel = core.replace(/[\s.-]/g, '');
         return (
           <span key={key}>
-            <a href={`tel:${tel}`} className="font-medium text-blue-700 underline whitespace-nowrap">{core}</a>
+            <a href={`tel:${tel}`} className="font-medium text-gray-800 underline whitespace-nowrap">{core}</a>
             {trail}
           </span>
         );
@@ -208,7 +208,7 @@ const Chatbot: React.FC = () => {
       if (/^[\w.+-]+@[\w-]+\.[\w.]+$/.test(core)) {
         return (
           <span key={key}>
-            <a href={`mailto:${core}`} className="font-medium text-blue-700 underline break-all">{core}</a>
+            <a href={`mailto:${core}`} className="font-medium text-gray-800 underline break-all">{core}</a>
             {trail}
           </span>
         );
@@ -216,7 +216,7 @@ const Chatbot: React.FC = () => {
       if (core.startsWith('/')) {
         return (
           <span key={key}>
-            <Link to={core} onClick={() => setIsOpen(false)} className="font-semibold text-blue-700 underline">{core}</Link>
+            <Link to={core} onClick={() => setIsOpen(false)} className="font-semibold text-gray-800 underline">{core}</Link>
           </span>
         );
       }
