@@ -29,6 +29,7 @@ const Home: React.FC = () => {
   ];
   
   const [currentWord, setCurrentWord] = useState(0);
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   useEffect(() => {
     const fetchAnnouncements = async () => {
@@ -67,7 +68,40 @@ const Home: React.FC = () => {
     return () => clearInterval(interval);
   }, [bibleVerses.length]);
 
+  const faqs = [
+    {
+      question: 'What is George Bakhanyiselwa Nguwe Bawo NPC?',
+      answer: "George Bakhanyiselwa Nguwe Bawo NPC (GBNB NPC) is a faith-based nonprofit in South Africa. Our motto is 'Yizani Sakhe Udonga Lwe Jerusalem' (Come and build the wall of Jerusalem) — we rebuild, restore and uplift communities through faith and unity."
+    },
+    {
+      question: 'How can I get involved?',
+      answer: 'Volunteer or donate via our Get Involved page, share a testimony or prayer request via our Contact page, or join us at a fellowship gathering listed on our Calendar page.'
+    },
+    {
+      question: 'Where do I find your events calendar?',
+      answer: 'Visit our Calendar page (/calendar) for the full monthly preview, plus ZIP, PDF and JPG downloads of the GBNB calendar.'
+    },
+    {
+      question: 'How do I contact GBNB NPC?',
+      answer: 'Email info.gbnb@gmail.com, call or WhatsApp +27 785 78 6134, or use the contact form on our Contact page. Follow us on Facebook, TikTok and YouTube.'
+    },
+    {
+      question: 'How can I support families affected by fires and hardship?',
+      answer: 'Through our community outreach we donate clothes, essentials and shelter support alongside local churches. Donate via our Get Involved page or contact us to partner.'
+    }
+  ];
+
   const defaultAnnouncements = [
+    {
+      title: 'GBNB NPC Donates Clothes After Zone 8 Fire',
+      content: 'On June 15, 2025 we supported families affected by the June 6 fire in Zone 8, Thembalethu, George — donating clothes, accessories and temporary shelter alongside local churches after 39 structures were destroyed. Together we build, together we rise.',
+      date: 'June 15, 2025'
+    },
+    {
+      title: 'GBNB NPC Donates Clothes After Zone 9 Fire',
+      content: 'On October 27, 2025 we responded with compassion to families affected by the mid-October fire in Zone 9, Thembalethu, George — donating clothes, accessories and temporary shelter in partnership with local churches. Together we build, together we rise.',
+      date: 'October 27, 2025'
+    },
     {
       title: "Never Miss a Gathering — Explore Our Events Calendar",
       content: 'Find our full calendar of services, outreaches and fellowship events — plan your year with us in faith and unity.',
@@ -544,6 +578,35 @@ const Home: React.FC = () => {
             <Link to="/contact" className="px-8 py-4 border-2 border-gray-300 hover:border-blue-600 text-gray-700 hover:text-blue-600 font-semibold rounded-lg transition-colors">
               Contact Us
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+            <p className="text-gray-600">Quick answers about who we are and how to take part</p>
+          </div>
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <div key={index} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                <button
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                  className="w-full flex items-center justify-between gap-4 px-6 py-4 text-left"
+                  aria-expanded={openFaq === index}
+                >
+                  <span className="font-semibold text-gray-900 text-sm sm:text-base">{faq.question}</span>
+                  <svg className={`w-5 h-5 text-blue-600 flex-shrink-0 transition-transform duration-300 ${openFaq === index ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {openFaq === index && (
+                  <p className="px-6 pb-5 text-gray-600 text-sm leading-relaxed">{faq.answer}</p>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </section>
