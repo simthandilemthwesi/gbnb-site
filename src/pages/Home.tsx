@@ -71,23 +71,33 @@ const Home: React.FC = () => {
   const faqs = [
     {
       question: 'What is George Bakhanyiselwa Nguwe Bawo NPC?',
-      answer: "George Bakhanyiselwa Nguwe Bawo NPC (GBNB NPC) is a faith-based nonprofit in South Africa. Our motto is 'Yizani Sakhe Udonga Lwe Jerusalem' (Come and build the wall of Jerusalem) — we rebuild, restore and uplift communities through faith and unity."
+      answer: "George Bakhanyiselwa Nguwe Bawo NPC (GBNB NPC) is a faith-based nonprofit based in Thembalethu, George, Western Cape, South Africa. Our motto is 'Yizani Sakhe Udonga Lwe Jerusalem' (Come and build the wall of Jerusalem) — we rebuild, restore and uplift communities through faith and unity.",
+      link: '/about',
+      linkLabel: 'Learn more about us'
     },
     {
       question: 'How can I get involved?',
-      answer: 'Volunteer or donate via our Get Involved page, share a testimony or prayer request via our Contact page, or join us at a fellowship gathering listed on our Calendar page.'
+      answer: 'Volunteer or donate via our Get Involved page, share a testimony or prayer request via our Contact page, or join us at a fellowship gathering listed on our Calendar page.',
+      link: '/get-involved',
+      linkLabel: 'Get Involved'
     },
     {
       question: 'Where do I find your events calendar?',
-      answer: 'Visit our Calendar page (/calendar) for the full monthly preview, plus ZIP, PDF and JPG downloads of the GBNB calendar.'
+      answer: 'Visit our Calendar page for the full monthly preview, plus ZIP, PDF and JPG downloads of the GBNB calendar.',
+      link: '/calendar',
+      linkLabel: 'View Calendar'
     },
     {
       question: 'How do I contact GBNB NPC?',
-      answer: 'Email info.gbnb@gmail.com, call or WhatsApp +27 785 78 6134, or use the contact form on our Contact page. Follow us on Facebook, TikTok and YouTube.'
+      answer: 'Email info.gbnb@gmail.com, call or WhatsApp +27 785 78 6134, or use the contact form on our Contact page. Follow us on Facebook, TikTok and YouTube.',
+      link: '/contact',
+      linkLabel: 'Contact us'
     },
     {
       question: 'How can I support families affected by fires and hardship?',
-      answer: 'Through our community outreach we donate clothes, essentials and shelter support alongside local churches. Donate via our Get Involved page or contact us to partner.'
+      answer: 'Through our community outreach we donate clothes, essentials and shelter support alongside local churches — including our Zone 8 and Zone 9 fire relief in Thembalethu. Donate via our Get Involved page or contact us to partner.',
+      link: '/get-involved',
+      linkLabel: 'Donate now'
     }
   ];
 
@@ -603,7 +613,17 @@ const Home: React.FC = () => {
                   </svg>
                 </button>
                 {openFaq === index && (
-                  <p className="px-6 pb-5 text-gray-600 text-sm leading-relaxed">{faq.answer}</p>
+                  <div className="px-6 pb-5">
+                    <p className="text-gray-600 text-sm leading-relaxed mb-3">{faq.answer}</p>
+                    {faq.link && (
+                      <Link to={faq.link} className="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 hover:text-blue-700">
+                        {faq.linkLabel || 'Learn more'}
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </Link>
+                    )}
+                  </div>
                 )}
               </div>
             ))}

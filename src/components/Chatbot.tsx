@@ -17,11 +17,15 @@ interface LanguageOption {
   welcome: string;
 }
 
-const SIMBOT_SYSTEM_PROMPT = `You are Simbot, the official intelligent assistant and receptionist of George Bakhanyiselwa Nguwe Bawo NPC (GBNB NPC) — a faith-based nonprofit in South Africa. Always refer to yourself as Simbot, never another name.
+const SIMBOT_SYSTEM_PROMPT = `You are Simbot, the official intelligent assistant and receptionist of George Bakhanyiselwa Nguwe Bawo NPC (GBNB NPC) — a faith-based nonprofit based in Thembalethu, George, Western Cape, South Africa, founded in 2023 by Mama Mthwesi. Always refer to yourself as Simbot, never another name. Answer every question about the NPC fully and helpfully using the knowledge below.
 Tone: warm, friendly, professional, encouraging — like a helpful community host. First-person ("I", "we"), conversational, South African and community-minded. Short clear paragraphs, bold for key facts, bullet lists only when steps/options are needed. Match the user's language where possible (English, isiXhosa, Afrikaans, isiZulu). End encouragingly (e.g. "Stay blessed, and let's rise together in unity through Christ.").
 Motto: "Yizani Sakhe Udonga Lwe Jerusalem" (Come, let us build the wall of Jerusalem). Vision: empower communities through fellowship, outreach programs, and digital ministry. Mission: spread faith, uplift youth, strengthen communities through spiritual growth and service.
-Services: fellowship gatherings, youth empowerment, community development, spiritual growth programs, outreach events. Programs page: Faith & Worship, Coding & Robotics, Intro to AI, Generative AI, Digital Literacy, Web Dev, Psycho-Soul Therapy, Community Development.
-Key pages: Home (/), About (/about), Programs (/programs), Gallery (/gallery + testimonials), Calendar (/calendar — Zoho monthly events preview + ZIP/PDF/JPG downloads), Get Involved (/get-involved — Volunteer form, Donation form with FNB bank details, Partnership via JotForm), Contact (/contact — contact form emails info.gbnb@gmail.com).
+Location: Thembalethu, George, 6529, Western Cape, South Africa (see the map on our Contact page). We serve communities across South Africa, including the Eastern Cape (closing the year in Thundergate, Ntabethemba, Komani).
+History & outreach: 3rd anniversary celebrated February 2026. Fire relief: donated clothes, accessories and temporary shelter with local churches after the Zone 8 fire (June 15, 2025, 39 structures destroyed) and the Zone 9 fire (October 27, 2025) in Thembalethu, George.
+Services: fellowship gatherings, youth empowerment, community development, spiritual growth programs, outreach and fire-relief drives, prayer support, testimonies.
+Programs page: Faith & Worship, Coding & Robotics, Intro to AI, Generative AI, Digital Literacy, Web Dev, Psycho-Soul Therapy, Community Development.
+Key pages: Home (/) with announcements, stats and FAQ, About (/about), Programs (/programs), Gallery (/gallery + photo submission + testimonials), Calendar (/calendar — Zoho monthly events preview + ZIP/PDF/JPG downloads), Get Involved (/get-involved — Volunteer form, Donation form with FNB bank details, Partnership via JotForm), Contact (/contact — contact form emails info.gbnb@gmail.com, map, socials).
+How to take part: volunteer or donate via Get Involved; request prayer or share a testimony via Contact or WhatsApp; find gatherings on the Calendar page; partner or sponsor by contacting us.
 Contact: phone +27 785 78 6134, email info.gbnb@gmail.com, site https://bakhanyiselwa.web.app, Facebook https://www.facebook.com/GeorgeBakhanyiselwaNguweBawo/, TikTok https://www.tiktok.com/@georgebakhanyiselwanguwe, YouTube https://www.youtube.com/@GeorgeBakhanyiselwaNguweBawo, WhatsApp https://wa.me/27785786134.
 Rules: only use these facts, never invent programs/contacts/availability. Keep answers concise and practical. Never request or discuss passwords/admin credentials. You are Simbot, an AI assistant, not human. If outside scope or sensitive, escalate via WhatsApp https://wa.me/27785786134 or email info.gbnb@gmail.com. When you don't know, be honest and direct the user to the right channel.`;
 
@@ -58,6 +62,7 @@ const languages: LanguageOption[] = [
 
 const quickReplies = [
   { label: "What's happening at GBNB?", question: "What's happening at GBNB?" },
+  { label: 'Where are you?', question: 'Where are you located?' },
   { label: 'Request a prayer', question: 'I would like to request a prayer.' },
   { label: 'Support GBNB NPC', question: 'How can I support GBNB NPC?' },
   { label: 'Calendar', question: 'Where can I find your events calendar?' },
@@ -67,35 +72,44 @@ const quickReplies = [
 
 const fallbackResponses: Record<string, string> = {
   programs:
-    'We offer: **Faith & Worship, Coding & Robotics, Intro to AI, Generative AI, Digital Literacy, Web Dev, Psycho-Soul Therapy, and Community Development.** See the full list on our Programs page — which one speaks to your heart?',
+    'We offer: **Faith & Worship, Coding & Robotics, Intro to AI, Generative AI, Digital Literacy, Web Dev, Psycho-Soul Therapy, and Community Development.** See the full list on our Programs page (/programs) — which one speaks to your heart?',
   volunteer:
-    "We'd love your help! Fill in the **Volunteer form on our Get Involved page**, or email **info.gbnb@gmail.com** / call **+27 785 78 6134**. Stay blessed, and let's rise together in unity through Christ.",
+    "We'd love your help! Fill in the **Volunteer form on our Get Involved page (/get-involved)**, or email **info.gbnb@gmail.com** / call **+27 785 78 6134**. Stay blessed, and let's rise together in unity through Christ.",
   donate:
-    'Thank you for your generosity! Use the **Donation form on our Get Involved page** (FNB bank details are listed there). Every contribution uplifts our community. Stay blessed!',
+    'Thank you for your generosity! Use the **Donation form on our Get Involved page (/get-involved)** (FNB bank details are listed there). Every contribution uplifts our community. Stay blessed!',
+  partner:
+    'Thank you for wanting to partner with us! Use the **Partnership option on our Get Involved page (/get-involved)**, or reach us at **info.gbnb@gmail.com** / **+27 785 78 6134** so we can grow the impact together.',
   contact:
-    'Connect with us:\n📧 info.gbnb@gmail.com\n📞 +27 785 78 6134\n💬 WhatsApp: https://wa.me/27785786134\n🌐 bakhanyiselwa.web.app',
+    'Connect with us:\n📧 info.gbnb@gmail.com\n📞 +27 785 78 6134\n💬 WhatsApp: https://wa.me/27785786134\n🌐 https://bakhanyiselwa.web.app\n📍 Thembalethu, George, Western Cape',
+  location:
+    'You’ll find us in **Thembalethu, George, 6529, Western Cape, South Africa** — see the map on our Contact page (/contact). We serve communities across South Africa, including the Eastern Cape.',
   calendar:
     'Find our full calendar of services, outreaches and fellowship events on our **Calendar page (/calendar)** — preview it online and download the ZIP, PDF or JPG. Never miss a gathering!',
   prayer:
-    'Thank you for trusting us with this. Please share your prayer request via our **Contact page** or WhatsApp **https://wa.me/27785786134**, and our fellowship will stand with you in prayer. Stay blessed.',
+    'Thank you for trusting us with this. Please share your prayer request via our **Contact page (/contact)** or WhatsApp **https://wa.me/27785786134**, and our fellowship will stand with you in prayer. Stay blessed.',
   testimony:
-    'We would be honoured to hear your story! Share it via our **Contact page** or email **info.gbnb@gmail.com**, and it may encourage others in our Gallery testimonials.',
+    'We would be honoured to hear your story! Share it via our **Contact page (/contact)** or email **info.gbnb@gmail.com**, and it may encourage others in our Gallery testimonials.',
+  social:
+    'Follow our journey:\n👍 Facebook: https://www.facebook.com/GeorgeBakhanyiselwaNguweBawo/\n🎵 TikTok: https://www.tiktok.com/@georgebakhanyiselwanguwe\n▶️ YouTube: https://www.youtube.com/@GeorgeBakhanyiselwaNguweBawo',
   about:
-    "I'm Simbot, assistant to **George Bakhanyiselwa Nguwe Bawo NPC (GBNB)** — a faith-based nonprofit. Our motto is **'Yizani Sakhe Udonga Lwe Jerusalem'** (Come and build the wall of Jerusalem).",
+    "I'm Simbot, assistant to **George Bakhanyiselwa Nguwe Bawo NPC (GBNB)** — a faith-based nonprofit from **George, Western Cape**, founded in 2023. Our motto is **'Yizani Sakhe Udonga Lwe Jerusalem'** (Come and build the wall of Jerusalem).",
   default:
-    "Thank you for reaching out! I'm Simbot — I can help with programs, calendar, volunteering, donations, prayer requests and testimonies. For anything specific, email **info.gbnb@gmail.com**, WhatsApp **https://wa.me/27785786134**, or visit our Contact page. Stay blessed!"
+    "Thank you for reaching out! I'm Simbot — I can help with our programs, calendar, location, volunteering, donations, partnerships, prayer requests and testimonies. For anything specific, email **info.gbnb@gmail.com**, WhatsApp **https://wa.me/27785786134**, or visit our Contact page (/contact). Stay blessed!"
 };
 
 function getFallbackResponse(userMessage: string): string {
   const m = userMessage.toLowerCase();
-  if (m.includes('calendar') || m.includes('event') || m.includes('happening') || m.includes('when is')) return fallbackResponses.calendar;
+  if (m.includes('where') || m.includes('location') || m.includes('located') || m.includes('address') || m.includes('directions') || m.includes('thembalethu') || m.includes('george')) return fallbackResponses.location;
+  if (m.includes('calendar') || m.includes('event') || m.includes('happening') || m.includes('when is') || m.includes('gathering') || m.includes('service times')) return fallbackResponses.calendar;
   if (m.includes('prayer') || m.includes('pray')) return fallbackResponses.prayer;
   if (m.includes('testimony') || m.includes('testimonial') || m.includes('share')) return fallbackResponses.testimony;
   if (m.includes('program') || m.includes('service') || m.includes('offer') || m.includes('course') || m.includes('coding') || m.includes('robotics') || m.includes('ai')) return fallbackResponses.programs;
+  if (m.includes('partner') || m.includes('sponsor')) return fallbackResponses.partner;
   if (m.includes('volunteer') || m.includes('join') || m.includes('help') || m.includes('support')) return fallbackResponses.volunteer;
-  if (m.includes('donate') || m.includes('donation') || m.includes('give') || m.includes('bank')) return fallbackResponses.donate;
-  if (m.includes('contact') || m.includes('email') || m.includes('phone') || m.includes('call') || m.includes('whatsapp') || m.includes('connect')) return fallbackResponses.contact;
-  if (m.includes('about') || m.includes('who') || m.includes('gbnb') || m.includes('motto') || m.includes('mission') || m.includes('vision')) return fallbackResponses.about;
+  if (m.includes('donate') || m.includes('donation') || m.includes('give') || m.includes('bank') || m.includes('fire') || m.includes('zone 8') || m.includes('zone 9') || m.includes('relief')) return fallbackResponses.donate;
+  if (m.includes('facebook') || m.includes('tiktok') || m.includes('youtube') || m.includes('social') || m.includes('follow')) return fallbackResponses.social;
+  if (m.includes('contact') || m.includes('email') || m.includes('phone') || m.includes('call') || m.includes('whatsapp') || m.includes('connect') || m.includes('number')) return fallbackResponses.contact;
+  if (m.includes('about') || m.includes('who') || m.includes('gbnb') || m.includes('motto') || m.includes('mission') || m.includes('vision') || m.includes('founder')) return fallbackResponses.about;
   return fallbackResponses.default;
 }
 
