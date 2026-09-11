@@ -99,7 +99,7 @@ function getFallbackResponse(userMessage: string): string {
   return fallbackResponses.default;
 }
 
-const LINK_RE = /((?:https?:\/\/|www\.)[^\s()]+|[\w.+-]+@[\w-]+\.[\w.]+|\/(?:calendar|contact|get-involved|programs|gallery|about|thank-you)(?:[^\s]*)?)/g;
+const LINK_RE = /((?:https?:\/\/|www\.)[^\s()]+|[\w.+-]+@[\w-]+\.[\w.]+|\+\d[\d\s.\-]*\d|\/(?:calendar|contact|get-involved|programs|gallery|about|thank-you)(?:[^\s]*)?)/g;
 
 const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -166,7 +166,7 @@ const Chatbot: React.FC = () => {
       const key = `${keyPrefix}-${i}`;
       let core = part;
       let trail = '';
-      if (/^(https?:\/\/|www\.|[\w.+-]+@)/.test(part)) {
+      if (/^(https?:\/\/|www\.|\+|[\w.+-]+@)/.test(part)) {
         const m = part.match(/[.,;:!?)]+$/);
         if (m) {
           core = part.slice(0, -m[0].length);
@@ -178,6 +178,15 @@ const Chatbot: React.FC = () => {
         return (
           <span key={key}>
             <a href={href} target="_blank" rel="noopener noreferrer" className="font-medium text-blue-700 underline break-all">{core}</a>
+            {trail}
+          </span>
+        );
+      }
+      if (/^\+\d[\d\s.\-]*\d$/.test(core)) {
+        const tel = core.replace(/[\s.\-]/g, '');
+        return (
+          <span key={key}>
+            <a href={`tel:${tel}`} className="font-medium text-blue-700 underline whitespace-nowrap">{core}</a>
             {trail}
           </span>
         );
