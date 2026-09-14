@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0B3D91" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-    
+    <!-- Google AdSense (revenue) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6092968632954371" crossorigin="anonymous"></script>
+
     <!-- Search Engine Verification -->
     <meta name="google-site-verification" content="WYqd-jCyaCfFiV0lY5ugrmAlbOoDJFCaRae4Od6pvAo" />
     <meta name="msvalidate.01" content="E09CAE83F340840237A747386A3BD726" />
@@ -263,6 +265,13 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
+
+    /* Consent Mode: analytics/ads off until the visitor chooses in the cookie banner */
+    gtag('consent', 'default', {
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      functionality_storage: 'denied'
+    });
 
     gtag('config', 'G-N77HB215YS');
   </script>

@@ -12,10 +12,12 @@ import GetInvolved from './pages/GetInvolved';
 import Contact from './pages/Contact';
 import ThankYou from './pages/ThankYou';
 import Calendar from './pages/Calendar';
+import Privacy from './pages/Privacy';
 import Admin from './pages/Admin';
 import FirebaseSetup from './pages/FirebaseSetup';
 import AdminProtectedRoute from './components/AdminProtectedRoute';
 import Chatbot from './components/Chatbot';
+import CookieConsent from './components/CookieConsent';
 import GoogleTranslate from './components/GoogleTranslate';
 import './index.css';
 
@@ -178,6 +180,7 @@ const App: React.FC = () => {
               <Route path="/contact" element={<><ContactSEO /><Contact /></>} />
               <Route path="/thank-you" element={<ThankYou />} />
               <Route path="/calendar" element={<Calendar />} />
+              <Route path="/privacy" element={<Privacy />} />
               <Route
                 path="/admin"
                 element={
@@ -190,6 +193,7 @@ const App: React.FC = () => {
             </Routes>
           </main>
           <Footer />
+          <CookieConsent />
           <Chatbot />
         </div>
       </Router>

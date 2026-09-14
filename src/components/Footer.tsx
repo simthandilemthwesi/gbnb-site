@@ -139,6 +139,7 @@ const Footer: React.FC = () => {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm text-accent-300">
               &copy; 2023 - {currentYear} George Bakhanyiselwa Nguwe Bawo NPC. All rights reserved.{' '}
+              <Link to="/privacy" className="underline hover:text-white transition-colors">Privacy Policy</Link>{' '}
               <span className="font-medium text-white ml-1">CAT {currentTime}</span>
             </p>
             <a
