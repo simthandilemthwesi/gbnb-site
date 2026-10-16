@@ -1,92 +1,218 @@
-# George Bakhanyiselwa Nguwe Bawo NPC (GBNB) — Website
+<!--
+  George Bakhanyiselwa Nguwe Bawo NPC — Community Website
+  Please keep this README public-facing. Never commit secrets, credentials, or private donor information.
+-->
 
-Live site: **https://bakhanyiselwa.web.app**
-Motto: *"Yizani Sakhe Udonga Lwe Jerusalem"* — Guided by Faith, United in Purpose.
+<p align="center">
+  <img src="public/bakhanyiselwa_logo.png" alt="George Bakhanyiselwa Nguwe Bawo NPC logo" width="190" />
+</p>
 
-Faith-based nonprofit website built with **React 18 + TypeScript + TailwindCSS + Firebase** (Firestore, Auth, Storage, Hosting). Firebase plan: **Spark (free)** — hosting + forms work fully; Cloud Functions outbound calls (AI) require Blaze.
+<h1 align="center">George Bakhanyiselwa Nguwe Bawo NPC Web App</h1>
 
-## Pages & Routes
+<p align="center">
+  <strong>Yizani Sakhe Udonga Lwe Jerusalem</strong><br />
+  Guided by Faith, United in Purpose.
+</p>
 
-| Route | Page | Notes |
-|---|---|---|
-| `/` | Home | Hero, stats (Years of Service auto = `currentYear − 2023`), announcements incl. calendar card linking to `/calendar`, programs preview, testimonials preview |
-| `/about` | About Us | Mission, vision, timeline |
-| `/programs` | Programs | Faith & Worship, Coding & Robotics, Intro to AI, Generative AI, Digital Literacy, Web Dev, Psycho-Soul Therapy, Community Development + impact stats |
-| `/gallery` | Gallery | Category filter, photo submission form, testimonials section (`/gallery#testimonials`) |
-| `/calendar` | Calendar | Zoho WorkDrive monthly preview (fully responsive `clamp(480px, 78vh, 880px)`), Option 1 ZIP + Option 2 single-file download instructions |
-| `/get-involved` | Get Involved | Volunteer form, Donation form (FNB bank details), Partnership via JotForm |
-| `/contact` | Contact | Contact form, contact cards, map, social links |
-| `/thank-you` | Thank You | Post-submit landing, auto-redirects home after 5s |
-| `/admin` | Admin dashboard | Protected, role-based (admin/editor) |
+<p align="center">
+  <a href="https://bakhanyiselwa.web.app">Visit the live website</a> ·
+  <a href="https://github.com/simthandilemthwesi/gbnb-site/issues">Report a bug or request a feature</a> ·
+  <a href="https://github.com/simthandilemthwesi/gbnb-site/pulls">Contribute code</a>
+</p>
 
-## Forms (validate → Firestore → email → redirect)
+---
 
-All forms validate required fields, save to Firestore, email **info.gbnb@gmail.com** via **Web3Forms** (browser POST — Spark-safe), show a success alert, then redirect to `/thank-you`.
+## About the project
 
-| Form | Firestore collection | Web3Forms env key |
-|---|---|---|
-| Volunteer | `volunteers` | `REACT_APP_WEB3FORMS_VOLUNTEER_KEY` |
-| Donation | `donations` | `REACT_APP_WEB3FORMS_DONATION_KEY` |
-| Contact | `contact_submissions` | `REACT_APP_WEB3FORMS_CONTACT_KEY` |
-| Photo Submission | `photo_submissions` (+ Storage image) | `REACT_APP_WEB3FORMS_PHOTO_KEY` |
+The **George Bakhanyiselwa Nguwe Bawo NPC Web App** is the digital platform for a faith-based, community-focused nonprofit organisation. It helps visitors learn about the organisation, explore its programmes, find updates and events, and get involved through volunteering, donations, and partnerships.
 
-Keys live in `.env` (gitignored, values documented in `.env.example`); `emailService.ts` falls back to built-in keys per form. Set each form's recipient + redirect (`https://bakhanyiselwa.web.app/thank-you`) + design in the Web3Forms dashboard.
+The project is being shared publicly to make it easier for developers, designers, accessibility advocates, community members, and other contributors to help improve the website.
 
-## Simbot — AI Chat Assistant
+**Live website:** https://bakhanyiselwa.web.app
 
-Floating widget (`src/components/Chatbot.tsx`), brand color **#1800ad**, custom icons (`public/simbot_ai_icon_outline.png`, `public/simbot_ai_icon.png`).
-Text-only customer-agent bot grounded in a site system prompt (motto, programs, calendar, contacts, WhatsApp escalation). Live replies via `assistantProxy` Cloud Function → Hugging Face; rule-based fallbacks answer offline.
-**Spark note:** functions can't reach Hugging Face on Spark (outbound limited to Google) — fallbacks reply until you upgrade to Blaze + set `firebase functions:config:set huggingface.key`.
+## What the website includes
 
-## Header / Footer / SEO
+- **Home** — organisation introduction, impact information, announcements, programmes, and testimonials.
+- **About** — background, mission, vision, and organisational story.
+- **Programmes** — faith and worship, coding and robotics, AI learning, digital literacy, web development, psycho-social support, and community development.
+- **Gallery** — community photos, category filtering, photo submissions, and testimonials.
+- **Calendar** — event and calendar information.
+- **Get Involved** — volunteer, donation, and partnership pathways.
+- **Contact** — contact form, contact information, map, and social links.
+- **Simbot AI assistant** — a website chat assistant with guided responses and fallback behaviour.
+- **Admin dashboard** — protected tools for authorised users to manage selected site content and submissions.
+- **Accessibility and discovery** — responsive layouts, language translation support, and search-engine metadata.
 
-- **Translate button in navbar** (free Google Translate widget, Spark-safe): EN + 9 SA languages (af, zu, xh, st, tn, nso, ve, ts, ss) + fr/pt/es. Icon-only on very small screens.
-- **Footer:** `© 2023–{auto year}` + live **CAT** clock (`Africa/Johannesburg`), social icons (Facebook, TikTok, YouTube), map, quick links.
-- **SEO:** React Helmet per page, canonical + hreflang (en/xh/zu/af/x-default), Open Graph + Twitter cards, JSON-LD (NonProfit, Organization, FAQ, WebSite, Breadcrumb, Event on Calendar), `robots.txt` + `sitemap.xml` (incl. `/calendar`), GA + GTM.
+Features that depend on external services, account configuration, Firebase rules, or a paid service tier may require additional setup before they work in a new environment.
 
-## Project Structure
+## Technology stack
 
+| Area | Technology |
+|---|---|
+| Front end | React 18, TypeScript |
+| Styling | Tailwind CSS |
+| Navigation | React Router |
+| Backend and data | Firebase, Cloud Firestore |
+| Authentication and media | Firebase Authentication and Storage |
+| Hosting | Firebase Hosting |
+| Additional services | Form/email integrations, Google Translate, and an AI assistant integration |
+
+See `package.json`, `firebase.json`, `.env.example`, and the deployment guide for the current implementation details.
+
+## Getting started
+
+### Requirements
+
+- Node.js and npm compatible with the dependencies in `package.json`
+- Git
+- A Firebase project if you need to test Firebase-backed features
+- Relevant third-party accounts and configuration for integrations you want to run locally
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/simthandilemthwesi/gbnb-site.git
+cd gbnb-site
 ```
-src/
-  components/  Navbar, Footer, Chatbot, GoogleTranslate, Captcha, AdminProtectedRoute, ...
-  pages/       Home, About, Programs, Gallery, Calendar, GetInvolved, Contact, ThankYou, Admin, FirebaseSetup
-  services/    firebase, assistantService (emulator auto on localhost), emailService (Web3Forms), database
-  contexts/    AuthContext (info.gbnb@gmail.com = auto-admin)
-  data/        testimonials
-functions/     assistantProxy callable + triggers (needs Blaze to deploy/call HF)
-public/        index.html (SEO), robots.txt, sitemap.xml, logos, simbot icons
-```
 
-## Run Locally
+If the repository has been renamed, GitHub will normally redirect the old repository URL. You can also copy the updated clone URL from the repository's **Code** menu.
+
+### 2. Install dependencies
 
 ```bash
 npm install
-npm start            # http://localhost:3000
-npm run dev          # app + functions emulator (needs firebase-tools)
 ```
 
-Admin test: open `/admin`, sign in with `info.gbnb@gmail.com` (self-assigns admin on first login); others get `editor`. Promote via `users` collection `role: 'admin'`. Add `localhost` to Firebase Auth authorized domains if login fails. Localhost uses production Firestore, so test submissions are real — use test data.
+### 3. Configure environment variables
 
-## Deploy (Spark — hosting only)
+Copy `.env.example` to a local `.env` file and fill in the values required for the services you intend to test.
+
+On Windows PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+On macOS or Linux:
 
 ```bash
-GENERATE_SOURCEMAP=false npm run build
-firebase deploy --project bakhanyiselwa --only hosting
+cp .env.example .env
 ```
 
-Functions (Blaze only):
+**Never commit your `.env` file, API keys, passwords, Firebase service-account files, private donor information, or production credentials.** Use placeholders in documentation and GitHub issues. Check the example environment file and the relevant service dashboards for configuration requirements.
+
+### 4. Start the development server
+
 ```bash
-firebase functions:config:set huggingface.key="hf_NEW_ROTATED_TOKEN"
-firebase deploy --project bakhanyiselwa --only functions
+npm start
 ```
 
-## Contact
+The React development server is usually available at http://localhost:3000.
 
-- Phone/WhatsApp: +27 785 78 6134 / https://wa.me/27785786134
-- Email: info.gbnb@gmail.com
-- Facebook: https://www.facebook.com/GeorgeBakhanyiselwaNguweBawo/
-- TikTok: https://www.tiktok.com/@georgebakhanyiselwanguwe
-- YouTube: https://www.youtube.com/@GeorgeBakhanyiselwaNguweBawo
+### 5. Build for production
+
+```bash
+npm run build
+```
+
+### Firebase deployment
+
+The live site is hosted on Firebase. Before deploying, confirm that you have permission to access the correct Firebase project, review the current Firebase configuration and security rules, and test the production build.
+
+The existing deployment notes are in [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md). Do not deploy changes to the organisation's production site unless you are authorised to do so.
+
+## Project structure
+
+```text
+public/       Static assets, organisation logo, icons, SEO files
+src/
+  components/ Reusable UI components
+  pages/      Website pages and routes
+  services/   Firebase, forms, and other service integrations
+  contexts/   Shared application state and authentication
+  data/       Local content and data
+functions/    Firebase Cloud Functions and assistant integration
+.github/      GitHub project and funding configuration
+```
+
+Some folders may evolve as the project develops. Follow the existing patterns in the relevant area before introducing a new architecture.
+
+## Contributing
+
+Community contributions are welcome. You do not need to be an expert in every part of the stack to help.
+
+### Ways to contribute
+
+- Fix bugs and improve reliability.
+- Improve mobile responsiveness, accessibility, and usability.
+- Refine layouts, visual consistency, and content presentation.
+- Improve documentation and developer onboarding.
+- Add tests and improve error handling.
+- Review translations and language support.
+- Improve performance, SEO, and privacy-conscious analytics.
+- Help identify and document issues affecting community members.
+
+### Recommended workflow
+
+1. **Check existing issues** before starting, to avoid duplicating work.
+2. **Open an issue** for a substantial feature or major change. Describe the problem, the proposed solution, and any user impact.
+3. **Fork the repository** and create a focused branch from `main`.
+4. **Make a small, clearly scoped change** that follows the existing coding style.
+5. **Test your work** with `npm start` and `npm run build` where possible. Include steps to reproduce a bug or screenshots for UI changes.
+6. **Commit with a clear message**, such as `fix: improve mobile navigation` or `docs: clarify local setup`.
+7. **Open a pull request** explaining what changed, why it is needed, how it was tested, and whether any configuration changes are required.
+
+Pull requests may be reviewed before merging. Please be respectful, explain trade-offs, and be open to feedback.
+
+### Before submitting a pull request
+
+- [ ] The change is focused and clearly described.
+- [ ] No secrets or private personal information are included.
+- [ ] Existing behaviour has been preserved unless a change is intentional.
+- [ ] The app builds successfully, or any failure is explained.
+- [ ] Documentation and environment examples are updated when needed.
+- [ ] UI changes have been checked on mobile and desktop where practical.
+
+## Security and privacy
+
+This website may process contact requests, volunteer submissions, donation-related information, photographs, and other community data.
+
+- Never publish real credentials, access tokens, donor details, or personal information in issues, pull requests, screenshots, or commits.
+- Do not weaken Firebase Authentication, Firestore rules, or Storage rules to make local testing easier.
+- Do not share or commit production data.
+- For a suspected security issue, avoid posting exploit details publicly. Contact the project maintainer privately through an appropriate channel.
+
+## Reporting issues and requesting features
+
+Use [GitHub Issues](https://github.com/simthandilemthwesi/gbnb-site/issues) to report reproducible bugs or propose improvements. Please include:
+
+- A concise title and description
+- Steps to reproduce the issue
+- Expected behaviour and actual behaviour
+- Browser/device details, if relevant
+- Screenshots or logs with all sensitive data removed
+
+For general questions about the organisation, use the contact details on the [live website](https://bakhanyiselwa.web.app).
+
+## Support the project
+
+If you find this work useful, you can help by contributing code, improving documentation, reporting issues, sharing the website, or supporting the organisation through the official channels listed on its website.
+
+Funding links, where available, are listed in [GitHub's funding configuration](.github/FUNDING.yml). Please use official channels and verify details before making a contribution.
+
+## Maintainer and acknowledgements
+
+Website development: **Simthandile Mthwesi**.
+
+Thank you to everyone who contributes time, knowledge, feedback, and care to the project and the community it serves.
+
+## Licence
+
+See the repository's [LICENSE](LICENSE) file for the applicable licence and conditions. Please review it before reusing or redistributing the code, branding, images, or other assets. The organisation's logo and identity should not be presented as belonging to another organisation.
 
 ---
-Built with ❤️ by Simthandile Mthwesi — "Yizani Sakhe Udonga Lwe Jerusalem"
+
+<p align="center">
+  <strong>George Bakhanyiselwa Nguwe Bawo NPC</strong><br />
+  <em>Yizani Sakhe Udonga Lwe Jerusalem</em>
+</p>
